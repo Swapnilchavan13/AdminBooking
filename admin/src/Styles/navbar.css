@@ -1,0 +1,23 @@
+.navbar{
+    background-color: rgb(83, 83, 83);
+    color: white;
+    padding: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+}
+.navbar>div{
+    display: flex;
+    text-align: center;
+    gap: 180px;
+    justify-content: space-between;
+    cursor: pointer;
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+a:hover{
+    color: rgb(253, 252, 192);
+
+}
