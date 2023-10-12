@@ -39,9 +39,45 @@ export const Allocatemovie = () => {
     return daysOfWeek[date.getDay()];
   };
 
+  const [savedData, setSavedData] = useState([]);
+
+  const handleSave = (day) => {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() + day);
+    const formattedDate = currentDate.toLocaleDateString();
+
+    // Create an object to store the data for this day
+    const dayData = {
+      date: formattedDate,
+      movieData: {},
+    };
+
+    // Loop through each movie and showtime to save the data
+    movieNames.forEach((movieName) => {
+      dayData.movieData[movieName] = {};
+      showTimes.forEach((showTime) => {
+        const key = `${movieName}-${day}-${showTime}`;
+        dayData.movieData[movieName][showTime] = selectedShowTimes[key] || false;
+      });
+    });
+
+    // Update the saved data
+    setSavedData((prevData) => [...prevData, dayData]);
+    console.log(savedData);
+  };
+
   return (
     <div className="main">
       <h1>Allocate Movie</h1>
+        <h3>Select Theatre</h3>
+      <select>
+      <option value="selct">Select Theatre</option>
+        <option value="PVR">PVR</option>
+        <option value="INOX">INOX</option>
+        <option value="MAXX">MAX</option>
+        <option value="GOLD">GOLD</option>
+      </select>
+      <br />
       <div>
         <table className="movie-table">
           <thead>
@@ -79,11 +115,17 @@ export const Allocatemovie = () => {
                       ))}
                     </td>
                   ))}
+                  <td>
+                    <button onClick={() => handleSave(day)}>Save</button>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+      </div>
+      <div>
+        <button onClick={() => console.log(savedData)}>Save All Data</button>
       </div>
     </div>
   );
