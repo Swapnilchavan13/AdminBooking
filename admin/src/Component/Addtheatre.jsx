@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Addmovie } from './Addmovie';
+import '../Styles/theatre.css'
 
 export const Addtheatre = () => {
   const [details, setDetails] = useState({
     name: '',
     location: '',
     rows: [],
+    loginid:'',
+    password:''
   });
 
   const [currentOption, setCurrentOption] = useState('A');
@@ -55,6 +58,8 @@ export const Addtheatre = () => {
       name: '',
       location: '',
       rows: [],
+      loginid: '',
+      password:''
     });
 
     // Optionally, you can clear the Addmovie component data here
@@ -62,10 +67,10 @@ export const Addtheatre = () => {
   };
 
   return (
-    <div>
+    <div className='main'>
       <h1>Add Theatre</h1>
       <label>
-        Name:
+        Theatre Name:
         <input type="text" name="name" value={details.name} onChange={handleInputChange} />
       </label>
       <br />
@@ -80,11 +85,12 @@ export const Addtheatre = () => {
       {details.rows.map((row, index) => (
         <div key={index}>
           <label>
-            Option: {row.option}
+            Row: {row.option}
           </label>
           <label>
-            - Add Seats:
+            Add Seats:
             <select
+            className='seatno'
               value={row.seats}
               onChange={(e) => handleSeatChange(index, parseInt(e.target.value))}
             >
@@ -102,8 +108,19 @@ export const Addtheatre = () => {
           </label>
         </div>
       ))}
+      <br />
+      <label>
+        Create Login:
+        <input type="text" name="loginid" value={details.loginid} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Password:
+        <input type="text" name="password" value={details.password} onChange={handleInputChange} />
+      </label>
+      <br />
       <button onClick={handleSave}>Save</button>
-      <Addmovie />
+      {/* <Addmovie /> */}
     </div>
   );
 };

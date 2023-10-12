@@ -1,0 +1,30 @@
+.movie-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .movie-table th, .movie-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .movie-table th {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  .movie-table th:first-child {
+    background-color: #555;
+  }
+  
+  .movie-table label {
+    display: block;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .movie-table input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  

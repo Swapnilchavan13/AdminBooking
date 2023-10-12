@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import '../Styles/movie.css'
 
 export const Addmovie = () => {
 
-  const [name, setName] = useState('');
+  const [moviename, setMoviename] = useState('');
   const [poster, setPoster] = useState(null);
   const [description, setDescription] = useState('');
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setMoviename(e.target.value);
   };
 
   const handlePosterChange = (e) => {
@@ -23,22 +24,22 @@ export const Addmovie = () => {
     e.preventDefault();
 
     // Here you can handle the form submission, e.g., sending data to a server or performing other actions.
-    console.log('Name:', name);
+    console.log('Movie Name:', moviename);
     console.log('Poster File:', poster);
     console.log('Description:', description);
 
     // Clear the form after submission
-    setName('');
+    setMoviename('');
     setPoster(null);
     setDescription('');
   };
   return (
-    <div>
+    <div className='main' >
       <h1>Add Movie</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="name">Movie Name:</label>
-          <input type="text" id="name" value={name} onChange={handleNameChange} />
+          <label htmlFor="moviename">Movie Name:</label>
+          <input type="text" id="moviename" value={moviename} onChange={handleNameChange} />
         </div>
 
         <div>
@@ -51,7 +52,7 @@ export const Addmovie = () => {
           <textarea id="description" value={description} onChange={handleDescriptionChange} />
         </div>
 
-        <button type="submit">Add Post</button>
+        <button type="submit">Add Movie</button>
       </form>
     </div>
   );
