@@ -12,6 +12,7 @@ export const Addtheatre = () => {
   });
 
   const [currentOption, setCurrentOption] = useState('A');
+  const [lastoption, setLastoption]= useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +25,7 @@ export const Addtheatre = () => {
   const addRow = () => {
     let newRow = { option: currentOption, seats: 0 };
     if (currentOption === 'D') {
+      setLastoption(true)
       newRow = { option: 'D', seats: 0, disabled: true };
     }
 
@@ -80,7 +82,7 @@ export const Addtheatre = () => {
       </label>
       <br />
 
-      <button onClick={addRow}>Add Row +</button>
+      <button disabled={lastoption} onClick={addRow}>Add Row +</button>
 
       {details.rows.map((row, index) => (
         <div key={index}>
