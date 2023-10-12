@@ -67,7 +67,9 @@ export const Addmovie = () => {
         <button type="submit">Add Movie</button>
       </form>
 
+
       <div id='selthe'>
+        <h4>Select Movie</h4>
         <select value={selectedMovie} onChange={handleMovieChange}>
           <option value="">Select Movie</option>
           {movieOption.map((movie, index) => (

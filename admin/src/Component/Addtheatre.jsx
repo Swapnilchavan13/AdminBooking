@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Addmovie } from './Addmovie';
 import '../Styles/theatre.css'
 
 export const Addtheatre = () => {
@@ -21,6 +20,7 @@ export const Addtheatre = () => {
       [name]: value,
     });
   };
+
 
   const addRow = () => {
     let newRow = { option: currentOption, seats: 0 };
@@ -82,7 +82,12 @@ export const Addtheatre = () => {
       </label>
       <br />
 
+      <h4>Add Rows And Seats</h4>
+      <div>
       <button disabled={lastoption} onClick={addRow}>Add Row +</button>
+      {/* <button disabled={lastoption} onClick={addRow}>Remove Row -</button> */}
+      </div>
+
 
       {details.rows.map((row, index) => (
         <div key={index}>

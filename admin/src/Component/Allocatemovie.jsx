@@ -75,11 +75,17 @@ export const Allocatemovie = () => {
     });
 
     setSelectedMovieData((prevData) => [...prevData, dayData]);
+    alert("Data Saved")
   };
 
   const handleSaveAllData = () => {
     console.log(selectedMovieData);
+    alert("All Data Saved")
   };
+
+  const editData = () => {
+    alert("Clicked On Edit")
+  }
 
   return (
     <div className="main">
@@ -135,7 +141,8 @@ export const Allocatemovie = () => {
                     </td>
                   ))}
                   <td>
-                    <button onClick={() => handleSave(day)}>Save</button>
+                    <button onClick={() => handleSave(day)}>Save</button><br />
+                    <button onClick={editData}>Edit</button>
                   </td>
                 </tr>
               );
