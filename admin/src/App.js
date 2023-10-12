@@ -10,6 +10,7 @@ function App() {
     <BrowserRouter>
     <Navbar />
     <Routes>
+        <Route path="/" element={<Addtheatre />} />
         <Route path="addtheatre" element={<Addtheatre />} />
         <Route path="addmovie" element={<Addmovie />} />
         <Route path="allocatemovie" element={<Allocatemovie />} />

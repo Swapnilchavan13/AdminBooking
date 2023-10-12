@@ -116,7 +116,8 @@ export const Allocatemovie = () => {
               return (
                 <tr key={day}>
                   <td>
-                    {dayOfWeek}, {formattedDate}
+                    <h4>{dayOfWeek}</h4>
+                    <h5>{formattedDate}</h5>
                   </td>
                   {movieNames.map((movieName) => (
                     <td key={movieName}>

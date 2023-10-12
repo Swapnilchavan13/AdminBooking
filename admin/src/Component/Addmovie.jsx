@@ -6,6 +6,13 @@ export const Addmovie = () => {
   const [moviename, setMoviename] = useState('');
   const [poster, setPoster] = useState(null);
   const [description, setDescription] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState('');
+
+  const movieOption = ['Fukrey-2',	'Salaar',	'Ganpath','Tiger-3','Dunki'];
+
+  const handleMovieChange = (event) => {
+    setSelectedMovie(event.target.value);
+  };
 
   const handleNameChange = (e) => {
     setMoviename(e.target.value);
@@ -33,6 +40,11 @@ export const Addmovie = () => {
     setPoster(null);
     setDescription('');
   };
+
+  const Deletemovie =() => {
+  alert(`${selectedMovie} Movie Deleted`)
+  }
+
   return (
     <div className='main' >
       <h1>Add Movie</h1>
@@ -54,6 +66,19 @@ export const Addmovie = () => {
 
         <button type="submit">Add Movie</button>
       </form>
+
+      <div id='selthe'>
+        <select value={selectedMovie} onChange={handleMovieChange}>
+          <option value="">Select Movie</option>
+          {movieOption.map((movie, index) => (
+            <option key={index} value={movie}>
+              {movie}
+            </option>
+          ))}
+        </select>
+      </div>
+      <button onClick={Deletemovie}>Delete Movie</button>
+     
     </div>
   );
 }
