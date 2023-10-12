@@ -2,6 +2,10 @@
     border-collapse: collapse;
     width: 100%;
   }
+
+  #selthe{
+    width: 200px;
+  }
   
   .movie-table th, .movie-table td {
     border: 1px solid #ddd;

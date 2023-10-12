@@ -2,9 +2,25 @@ import React, { useState } from 'react';
 import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
-  // Hardcoded data for demonstration
-  const movieNames = ["Movie 1", "Movie 2", "Movie 3", "Movie 4", "Movie 5"];
+  const [selectedTheatre, setSelectedTheatre] = useState('');
+  const [selectedMovieData, setSelectedMovieData] = useState([]);
+
+  const handleTheatreChange = (event) => {
+    setSelectedTheatre(event.target.value);
+  };
+
+  const movieNames = ["Fukrey-2", "Salaar", "Ganpath", "Tiger-3", "Dunki"];
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
+  const theaterOptions = [
+    'PVR',
+    'Carnival Sangam',
+    'INOX',
+    'Miraj Cinemas',
+    'MAXX',
+    'GOLD',
+    'Big Cinemas',
+  ];
+
   const startDate = new Date(); // Set your start date here
   const days = 14;
 
@@ -39,20 +55,17 @@ export const Allocatemovie = () => {
     return daysOfWeek[date.getDay()];
   };
 
-  const [savedData, setSavedData] = useState([]);
-
   const handleSave = (day) => {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
 
-    // Create an object to store the data for this day
     const dayData = {
       date: formattedDate,
       movieData: {},
+      theatreName: selectedTheatre,
     };
 
-    // Loop through each movie and showtime to save the data
     movieNames.forEach((movieName) => {
       dayData.movieData[movieName] = {};
       showTimes.forEach((showTime) => {
@@ -61,22 +74,27 @@ export const Allocatemovie = () => {
       });
     });
 
-    // Update the saved data
-    setSavedData((prevData) => [...prevData, dayData]);
-    console.log(savedData);
+    setSelectedMovieData((prevData) => [...prevData, dayData]);
+  };
+
+  const handleSaveAllData = () => {
+    console.log(selectedMovieData);
   };
 
   return (
     <div className="main">
       <h1>Allocate Movie</h1>
-        <h3>Select Theatre</h3>
-      <select>
-      <option value="selct">Select Theatre</option>
-        <option value="PVR">PVR</option>
-        <option value="INOX">INOX</option>
-        <option value="MAXX">MAX</option>
-        <option value="GOLD">GOLD</option>
-      </select>
+      <h3>Select Theatre: {selectedTheatre}</h3>
+      <div id='selthe'>
+        <select value={selectedTheatre} onChange={handleTheatreChange}>
+          <option value="">Select Theatre</option>
+          {theaterOptions.map((theatre, index) => (
+            <option key={index} value={theatre}>
+              {theatre}
+            </option>
+          ))}
+        </select>
+      </div>
       <br />
       <div>
         <table className="movie-table">
@@ -125,7 +143,7 @@ export const Allocatemovie = () => {
         </table>
       </div>
       <div>
-        <button onClick={() => console.log(savedData)}>Save All Data</button>
+        <button onClick={handleSaveAllData}>Save All Data</button>
       </div>
     </div>
   );

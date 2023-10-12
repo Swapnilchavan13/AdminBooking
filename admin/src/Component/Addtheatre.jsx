@@ -110,12 +110,12 @@ export const Addtheatre = () => {
       ))}
       <br />
       <label>
-        Create Login:
+        Create Login Id:
         <input type="text" name="loginid" value={details.loginid} onChange={handleInputChange} />
       </label>
       <br />
       <label>
-        Password:
+        Create Password:
         <input type="text" name="password" value={details.password} onChange={handleInputChange} />
       </label>
       <br />
