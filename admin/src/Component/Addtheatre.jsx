@@ -80,6 +80,7 @@ export const Addtheatre = () => {
             loginid: '',
             password: '',
           });
+          window.location.reload(false);
         } else {
           alert('Failed to save data');
         }
