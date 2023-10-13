@@ -1,25 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
   const [selectedMovieData, setSelectedMovieData] = useState([]);
 
+  const [movieNames, setMovieOption] = useState([]);
+  const [theaterOptions , setTheaterOptions] =  useState([])
+   
+
+  const fetchMovieOptions = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/moviedata');
+      if (response.ok) {
+        const data = await response.json();
+        const md =(data.map((el) => el.moviename));    
+        setMovieOption(md);
+      } else {
+        console.error('Failed to fetch movie options');
+      }
+
+      const theatreres = await fetch('http://localhost:3005/theatredata');
+      if (theatreres.ok) {
+        const tdata = await theatreres.json();
+        const td =(tdata.map((el) => el.name));    
+        setTheaterOptions(td);
+      } else {
+        console.error('Failed to fetch movie options');
+      }
+    } catch (error) {
+      console.error('Error while fetching movie options:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovieOptions();
+  }, []);
+
+
+
   const handleTheatreChange = (event) => {
     setSelectedTheatre(event.target.value);
   };
 
-  const movieNames = ["Fukrey-2", "Salaar", "Ganpath", "Tiger-3", "Dunki"];
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
-  const theaterOptions = [
-    'PVR',
-    'Carnival Sangam',
-    'INOX',
-    'Miraj Cinemas',
-    'MAXX',
-    'GOLD',
-    'Big Cinemas',
-  ];
 
   const startDate = new Date(); // Set your start date here
   const days = 14;
@@ -72,14 +96,35 @@ export const Allocatemovie = () => {
         const key = `${movieName}-${day}-${showTime}`;
         dayData.movieData[movieName][showTime] = selectedShowTimes[key] || false;
       });
-    });
+    });git
 
     setSelectedMovieData((prevData) => [...prevData, dayData]);
-    alert("Data Saved")
+
+    // alert("Data Saved")
   };
 
   const handleSaveAllData = () => {
-    console.log(selectedMovieData);
+    // console.log(selectedMovieData);
+
+     // Make a POST request using the fetch API
+     fetch('http://localhost:3005/allocatedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedMovieData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Data saved successfully');
+        } else {
+          alert('Failed to save data');
+        }
+      })
+      .catch((error) => {
+        console.error('Error while saving data:', error);
+      });
+
     alert("All Data Saved")
   };
 

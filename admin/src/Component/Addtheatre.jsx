@@ -108,7 +108,6 @@ export const Addtheatre = () => {
       <h4>Add Rows And Seats</h4>
       <div>
       <button disabled={lastoption} onClick={addRow}>Add Row +</button>
-      {/* <button disabled={lastoption} onClick={addRow}>Remove Row -</button> */}
       </div>
 
 
