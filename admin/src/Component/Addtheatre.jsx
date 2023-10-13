@@ -52,21 +52,43 @@ export const Addtheatre = () => {
   };
 
   const handleSave = () => {
-    // Here, you can save the data to your desired storage or perform other actions.
-    console.log('Data to be saved:', details);
-
-    // Clear the form or reset it as needed
-    setDetails({
-      name: '',
-      location: '',
-      rows: [],
-      loginid: '',
-      password:''
-    });
-
-    // Optionally, you can clear the Addmovie component data here
-    // Addmovie.clearData();
+    // Prepare the data to be sent in the request body
+    const newData = {
+      name: details.name,
+      location: details.location,
+      rows: details.rows,
+      loginid: details.loginid,
+      password: details.password,
+    };
+  
+    // Make a POST request using the fetch API
+    fetch('http://localhost:3005/theatredata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Data saved successfully');
+          // Clear the form or reset it as needed
+          setDetails({
+            name: '',
+            location: '',
+            rows: [],
+            loginid: '',
+            password: '',
+          });
+        } else {
+          alert('Failed to save data');
+        }
+      })
+      .catch((error) => {
+        console.error('Error while saving data:', error);
+      });
   };
+  
 
   return (
     <div className='main'>
@@ -117,7 +139,7 @@ export const Addtheatre = () => {
       ))}
       <br />
       <label>
-        Create Login Id:
+      Create Login Id:
         <input type="text" name="loginid" value={details.loginid} onChange={handleInputChange} />
       </label>
       <br />

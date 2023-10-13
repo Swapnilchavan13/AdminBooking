@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Styles/movie.css'
 
 export const Addmovie = () => {
@@ -8,7 +8,25 @@ export const Addmovie = () => {
   const [description, setDescription] = useState('');
   const [selectedMovie, setSelectedMovie] = useState('');
 
-  const movieOption = ['Fukrey-2',	'Salaar',	'Ganpath','Tiger-3','Dunki'];
+  const [movieOption, setMovieOption] = useState([]);
+
+  const fetchMovieOptions = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/moviedata');
+      if (response.ok) {
+        const data = await response.json();
+        setMovieOption(data);
+      } else {
+        console.error('Failed to fetch movie options');
+      }
+    } catch (error) {
+      console.error('Error while fetching movie options:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovieOptions();
+  }, []);
 
   const handleMovieChange = (event) => {
     setSelectedMovie(event.target.value);
@@ -19,8 +37,7 @@ export const Addmovie = () => {
   };
 
   const handlePosterChange = (e) => {
-    const file = e.target.files[0];
-    setPoster(file);
+    setPoster(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
@@ -30,20 +47,63 @@ export const Addmovie = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Here you can handle the form submission, e.g., sending data to a server or performing other actions.
-    console.log('Movie Name:', moviename);
-    console.log('Poster File:', poster);
-    console.log('Description:', description);
+    const newData = {
+      moviename: moviename,
+      poster: poster,
+      description: description,
+    };
 
-    // Clear the form after submission
-    setMoviename('');
-    setPoster(null);
-    setDescription('');
+    fetch('http://localhost:3005/moviedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Data saved successfully');
+          setMoviename('');
+          setPoster('');
+          setDescription('');
+          fetchMovieOptions(); // Refresh movie options after adding a new movie
+        } else {
+          alert('Failed to save data');
+        }
+      })
+      .catch((error) => {
+        console.error('Error while saving data:', error);
+      });
   };
 
-  const Deletemovie =() => {
-  alert(`${selectedMovie} Movie Deleted`)
-  }
+
+  const deleteMovie = () => {
+    if (selectedMovie) {
+      const movieToDelete = movieOption.find((movie) => movie.moviename === selectedMovie);
+      if (movieToDelete) {
+        fetch(`http://localhost:3005/moviedata/${movieToDelete._id}`, {
+          method: 'DELETE',
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert(`${selectedMovie} Movie Deleted`);
+              setSelectedMovie('');
+              fetchMovieOptions(); // Refresh movie options after deleting a movie
+            } else {
+              alert('Failed to delete the movie');
+            }
+          })
+          .catch((error) => {
+            console.error('Error while deleting the movie:', error);
+          });
+      } else {
+        alert('Movie not found');
+      }
+    } else {
+      alert('Please select a movie to delete');
+    }
+  };
+
 
   return (
     <div className='main' >
@@ -55,8 +115,8 @@ export const Addmovie = () => {
         </div>
 
         <div>
-          <label htmlFor="poster">Poster File:</label>
-          <input type="file" id="poster" onChange={handlePosterChange} />
+          <label htmlFor="poster">Poster Link:</label>
+          <input type="text" id="poster" value={poster} onChange={handlePosterChange} />
         </div>
 
         <div>
@@ -67,19 +127,18 @@ export const Addmovie = () => {
         <button type="submit">Add Movie</button>
       </form>
 
-
       <div id='selthe'>
         <h4>Select Movie</h4>
         <select value={selectedMovie} onChange={handleMovieChange}>
           <option value="">Select Movie</option>
           {movieOption.map((movie, index) => (
-            <option key={index} value={movie}>
-              {movie}
+            <option key={index} value={movie.moviename}>
+              {movie.moviename}
             </option>
           ))}
         </select>
       </div>
-      <button onClick={Deletemovie}>Delete Movie</button>
+      <button onClick={deleteMovie}>Delete Movie</button>
      
     </div>
   );
