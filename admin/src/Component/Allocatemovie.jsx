@@ -79,52 +79,56 @@ export const Allocatemovie = () => {
     return daysOfWeek[date.getDay()];
   };
 
-  const handleSave = (day) => {
+  const handleSave = async (day) => {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
-
-    const dayData = {
+  
+    const newData = {
       date: formattedDate,
-      movieData: {},
       theatreName: selectedTheatre,
+      movieData: {}
     };
-
+  
     movieNames.forEach((movieName) => {
-      dayData.movieData[movieName] = {};
+      const showTimeData = [];
+  
       showTimes.forEach((showTime) => {
         const key = `${movieName}-${day}-${showTime}`;
-        dayData.movieData[movieName][showTime] = selectedShowTimes[key] || false;
+        const showTimeValue = selectedShowTimes[key];
+  
+        if (showTimeValue === true) {
+          showTimeData.push(showTime);
+        }
       });
-    });git
-
-    setSelectedMovieData((prevData) => [...prevData, dayData]);
-
-    // alert("Data Saved")
-  };
-
-  const handleSaveAllData = () => {
-    // console.log(selectedMovieData);
-
-     // Make a POST request using the fetch API
-     fetch('http://localhost:3005/allocatedata', {
+  
+      if (showTimeData.length > 0) {
+        newData.movieData[movieName] = showTimeData;
+      }
+    });
+  
+    // Make a POST request to the API
+    const response = await fetch('http://localhost:3005/allocatedata', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(selectedMovieData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          alert('Data saved successfully');
-        } else {
-          alert('Failed to save data');
-        }
-      })
-      .catch((error) => {
-        console.error('Error while saving data:', error);
-      });
+      body: JSON.stringify(newData)
+    });
+  
+    // Check the response status
+    if (response.status === 200) {
+      // Data saved successfully
+      alert('Data saved successfully');
+    } else {
+      // Error saving data
+      alert('Error saving data');
+    }
+  };
+  
 
+  const handleSaveAllData = () => {
+    console.log(selectedMovieData);
     alert("All Data Saved")
   };
 
