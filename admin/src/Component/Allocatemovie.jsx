@@ -3,9 +3,8 @@ import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
-  const [selectedMovieData, setSelectedMovieData] = useState([]);
-
   const [movieNames, setMovieOption] = useState([]);
+  const [poster, setPoster]=useState([]);
   const [theaterOptions , setTheaterOptions] =  useState([])
    
 
@@ -14,7 +13,9 @@ export const Allocatemovie = () => {
       const response = await fetch('http://localhost:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
-        const md =(data.map((el) => el.moviename));    
+        const pd =(data.map((el) => el.poster));
+        const md =(data.map((el) => el.moviename));
+        setPoster(pd)    
         setMovieOption(md);
       } else {
         console.error('Failed to fetch movie options');
@@ -36,7 +37,6 @@ export const Allocatemovie = () => {
   useEffect(() => {
     fetchMovieOptions();
   }, []);
-
 
 
   const handleTheatreChange = (event) => {
@@ -127,15 +127,6 @@ export const Allocatemovie = () => {
   };
   
 
-  const handleSaveAllData = () => {
-    console.log(selectedMovieData);
-    alert("All Data Saved")
-  };
-
-  const editData = () => {
-    alert("Clicked On Edit")
-  }
-
   return (
     <div className="main">
       <h1>Allocate Movie</h1>
@@ -157,7 +148,9 @@ export const Allocatemovie = () => {
             <tr>
               <th>Movie</th>
               {movieNames.map((movieName) => (
-                <th key={movieName}>{movieName}</th>
+                <th key={movieName}>{movieName}
+                <img width="150px" height="200px" src={poster} alt="" />
+                </th>
               ))}
             </tr>
           </thead>
@@ -191,16 +184,12 @@ export const Allocatemovie = () => {
                   ))}
                   <td>
                     <button onClick={() => handleSave(day)}>Save</button><br />
-                    <button onClick={editData}>Edit</button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-      </div>
-      <div>
-        <button onClick={handleSaveAllData}>Save All Data</button>
       </div>
     </div>
   );
