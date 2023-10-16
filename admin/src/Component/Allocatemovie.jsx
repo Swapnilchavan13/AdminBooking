@@ -147,9 +147,9 @@ export const Allocatemovie = () => {
           <thead>
             <tr>
               <th>Movie</th>
-              {movieNames.map((movieName) => (
+              {movieNames.map((movieName, index) => (
                 <th key={movieName}>{movieName}
-                <img width="150px" height="200px" src={poster} alt="" />
+                <img width="150px" height="200px" src={poster[index]} alt="" />
                 </th>
               ))}
             </tr>
