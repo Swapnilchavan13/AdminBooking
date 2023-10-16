@@ -191,7 +191,7 @@ export const Allocatemovie = () => {
                       }
                    }                        
               return (
-                <tr key={day} className={val ? 'saved' : ''} style={{ background: val ? 'teal' : '' }}>
+                <tr key={day} className={val ? 'saved' : ''}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>

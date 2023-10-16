@@ -33,17 +33,11 @@
   }
   
   .saved {
-    background-color: #ccc; /* Set your desired gray background color */
+    background-color: #8d8d8d; /* Set your desired gray background color */
+    pointer-events: none;
+  }
+  .saved input[type="checkbox"] {
+    opacity: 0.5; /* Reduce opacity to make it look grayed out */
+    cursor: not-allowed; /* Change cursor style to indicate it's not clickable */
   }
   
-  .grayed-row {
-    background-color: red;
-  }
-
-  /* Add this to your existing CSS file or create a new one if you don't have one */
-
-/* Style for rows with a red background */
-.row.highlighted {
-  background-color: red;
-  color: white; /* You can adjust the text color to make it readable on a red background */
-}
