@@ -127,26 +127,30 @@ export const Allocatemovie = () => {
       setSavedRows([...savedRows, day]);
     });
   
-    // Make a POST request to the API
-    const response = await fetch('http://localhost:3005/allocatedata', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newData)
-    });
-  
-    // Check the response status
-    if (response.status === 200) {
-      // Data saved successfully
-      alert('Data saved successfully');
-    } else {
-      // Error saving data
-      alert('Error saving data');
-    }
-  };
+   // Make a POST request to the API
+const response = await fetch('http://localhost:3005/allocatedata', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(newData)
+});
 
-    console.log(allocatedata)
+if (response.status === 200) {
+  // Data saved successfully
+  const result = await response.json();
+
+  if (result.message === 'Duplicate data') {
+    alert('Error: Duplicate data');
+  } else {
+    alert('Data saved successfully');
+  }
+} else {
+  // Error saving data
+  alert('Error saving data');
+}
+// window.location.reload(false);
+  };
 
   return (
     <div className="main">
