@@ -6,7 +6,10 @@ export const Allocatemovie = () => {
   const [movieNames, setMovieOption] = useState([]);
   const [poster, setPoster]=useState([]);
   const [theaterOptions , setTheaterOptions] =  useState([])
-   
+  const [savedRows, setSavedRows] = useState([]);
+  const [allocatedata , setAlloacatedata] = useState([]);
+  const [atheatre , setatheatre] = useState([]);
+  const [adate , setadate] = useState([]);
 
   const fetchMovieOptions = async () => {
     try {
@@ -24,20 +27,35 @@ export const Allocatemovie = () => {
       const theatreres = await fetch('http://localhost:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
-        const td =(tdata.map((el) => el.name));    
+        const td =(tdata.map((el) => el.name));   
         setTheaterOptions(td);
       } else {
         console.error('Failed to fetch movie options');
       }
-    } catch (error) {
-      console.error('Error while fetching movie options:', error);
-    }
-  };
+
+      const allocates = await fetch('http://localhost:3005/allocatedata');
+      if (allocates.ok) {
+        const adata = await allocates.json();
+        const aa = adata.map((el) => el.theatreName)
+        const dd = adata.map((el) => el.date)
+  // console.log(aa)
+        setatheatre(aa)
+        setadate(dd)
+        // console.log(aa)
+        setAlloacatedata(adata);
+        
+      } else {
+        console.error('Failed to fetch movie options');
+      }
+
+  } catch (error) {
+    console.error('Error while fetching movie options:', error);
+  }
+};
 
   useEffect(() => {
     fetchMovieOptions();
   }, []);
-
 
   const handleTheatreChange = (event) => {
     setSelectedTheatre(event.target.value);
@@ -47,6 +65,7 @@ export const Allocatemovie = () => {
 
   const startDate = new Date(); // Set your start date here
   const days = 14;
+
 
   const [selectedShowTimes, setSelectedShowTimes] = useState({});
 
@@ -96,7 +115,6 @@ export const Allocatemovie = () => {
       showTimes.forEach((showTime) => {
         const key = `${movieName}-${day}-${showTime}`;
         const showTimeValue = selectedShowTimes[key];
-  
         if (showTimeValue === true) {
           showTimeData.push(showTime);
         }
@@ -104,7 +122,9 @@ export const Allocatemovie = () => {
   
       if (showTimeData.length > 0) {
         newData.movieData[movieName] = showTimeData;
+          
       }
+      setSavedRows([...savedRows, day]);
     });
   
     // Make a POST request to the API
@@ -125,7 +145,8 @@ export const Allocatemovie = () => {
       alert('Error saving data');
     }
   };
-  
+
+    console.log(allocatedata)
 
   return (
     <div className="main">
@@ -160,9 +181,17 @@ export const Allocatemovie = () => {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
-
+              // console.log(formattedDate)
+              
+              var val = false; // Initialize val to false before the loop
+              for (var i = 0; i < adate.length; i++) {
+                if (formattedDate == adate[i] && selectedTheatre == atheatre[i]) {
+                    val = true;
+                  //  console.log("matched");
+                      }
+                   }                        
               return (
-                <tr key={day}>
+                <tr key={day} className={val ? 'saved' : ''} style={{ background: val ? 'teal' : '' }}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>
@@ -172,8 +201,8 @@ export const Allocatemovie = () => {
                       {showTimes.map((showTime) => (
                         <label key={showTime}>
                           <input
-                            type="checkbox"
                             checked={isShowTimeSelected(movieName, day, showTime)}
+                            type="checkbox"
                             disabled={!canSelectShowTime(movieName, day, showTime)}
                             onChange={() => handleShowTimeChange(movieName, day, showTime)}
                           />

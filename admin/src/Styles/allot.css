@@ -32,3 +32,18 @@
     margin-right: 5px;
   }
   
+  .saved {
+    background-color: #ccc; /* Set your desired gray background color */
+  }
+  
+  .grayed-row {
+    background-color: red;
+  }
+
+  /* Add this to your existing CSS file or create a new one if you don't have one */
+
+/* Style for rows with a red background */
+.row.highlighted {
+  background-color: red;
+  color: white; /* You can adjust the text color to make it readable on a red background */
+}
