@@ -40,4 +40,7 @@
     opacity: 0.5; 
     cursor: not-allowed;
   }
+  .saved button{
+    background-color: #464545;
+  }
   
