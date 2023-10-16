@@ -38,7 +38,7 @@ export const Allocatemovie = () => {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreName)
         const dd = adata.map((el) => el.date)
-  // console.log(aa)
+        // console.log(aa)
         setatheatre(aa)
         setadate(dd)
         // console.log(aa)
@@ -65,7 +65,6 @@ export const Allocatemovie = () => {
 
   const startDate = new Date(); // Set your start date here
   const days = 14;
-
 
   const [selectedShowTimes, setSelectedShowTimes] = useState({});
 
