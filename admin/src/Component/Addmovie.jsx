@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import '../Styles/movie.css'
 
 export const Addmovie = () => {
-
   const [moviename, setMoviename] = useState('');
   const [poster, setPoster] = useState(null);
   const [description, setDescription] = useState('');
