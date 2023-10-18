@@ -10,6 +10,7 @@ export const Allocatemovie = () => {
   const [allocatedata , setAlloacatedata] = useState([]);
   const [atheatre , setatheatre] = useState([]);
   const [adate , setadate] = useState([]);
+  // const [vall ,setVall] = useState(false)
 
   const fetchMovieOptions = async () => {
     try {
@@ -120,8 +121,7 @@ export const Allocatemovie = () => {
       });
   
       if (showTimeData.length > 0) {
-        newData.movieData[movieName] = showTimeData;
-          
+        newData.movieData[movieName] = showTimeData;          
       }
       setSavedRows([...savedRows, day]);
     });
