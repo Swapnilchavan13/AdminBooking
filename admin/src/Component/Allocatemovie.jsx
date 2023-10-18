@@ -173,6 +173,7 @@ if (response.status === 200) {
               <th>Movie</th>
               {movieNames.map((movieName, index) => (
                 <th key={movieName}>{movieName}
+                <br />
                 <img width="150px" height="200px" src={poster[index]} alt="" />
                 </th>
               ))}
@@ -188,7 +189,7 @@ if (response.status === 200) {
               
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
-                if (formattedDate == adate[i] && selectedTheatre == atheatre[i]) {
+                if (formattedDate === adate[i] && selectedTheatre === atheatre[i]) {
                     val = true;
                   //  console.log("matched");
                       }
