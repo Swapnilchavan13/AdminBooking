@@ -10,7 +10,6 @@ export const Allocatemovie = () => {
   const [allocatedata , setAlloacatedata] = useState([]);
   const [atheatre , setatheatre] = useState([]);
   const [adate , setadate] = useState([]);
-  // const [vall ,setVall] = useState(false)
 
   const fetchMovieOptions = async () => {
     try {
@@ -148,8 +147,7 @@ if (response.status === 200) {
   // Error saving data
   alert('Error saving data');
 }
-// window.location.reload(false);
-  };
+};
 
   return (
     <div className="main">
