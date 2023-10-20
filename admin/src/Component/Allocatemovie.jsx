@@ -38,10 +38,8 @@ export const Allocatemovie = () => {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreName)
         const dd = adata.map((el) => el.date)
-        // console.log(aa)
         setatheatre(aa)
         setadate(dd)
-        // console.log(aa)
         setAlloacatedata(adata);
         
       } else {
@@ -183,17 +181,15 @@ if (response.status === 200) {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
-              // console.log(formattedDate)
               
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
                 if (formattedDate === adate[i] && selectedTheatre === atheatre[i]) {
                     val = true;
-                  //  console.log("matched");
                       }
                    }                        
               return (
-                <tr key={day} className={val ? 'saved' : ''}>
+                <tr key={day} className={savedRows.includes(day) || val ? 'saved' : ''}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>
