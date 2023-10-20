@@ -42,7 +42,7 @@ const renderLinksPopup = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://localhost:3005/moviedata');
+      const response = await fetch('http://62.72.59.146:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
         setMovieOption(data);
@@ -83,7 +83,7 @@ const renderLinksPopup = () => {
       description: description,
     };
 
-    fetch('http://localhost:3005/moviedata', {
+    fetch('http://62.72.59.146:3005/moviedata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const renderLinksPopup = () => {
     if (selectedMovie) {
       const movieToDelete = movieOption.find((movie) => movie.moviename === selectedMovie);
       if (movieToDelete) {
-        fetch(`http://localhost:3005/moviedata/${movieToDelete._id}`, {
+        fetch(`http://62.72.59.146:3005/moviedata/${movieToDelete._id}`, {
           method: 'DELETE',
         })
           .then((response) => {

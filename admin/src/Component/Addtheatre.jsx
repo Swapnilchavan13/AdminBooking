@@ -62,7 +62,7 @@ export const Addtheatre = () => {
     };
   
     // Make a POST request using the fetch API
-    fetch('http://localhost:3005/theatredata', {
+    fetch('http://62.72.59.146:3005/theatredata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

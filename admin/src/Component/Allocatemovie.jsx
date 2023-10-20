@@ -13,7 +13,7 @@ export const Allocatemovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://localhost:3005/moviedata');
+      const response = await fetch('http://62.72.59.146:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
         const pd =(data.map((el) => el.poster));
@@ -24,7 +24,7 @@ export const Allocatemovie = () => {
         console.error('Failed to fetch movie options');
       }
 
-      const theatreres = await fetch('http://localhost:3005/theatredata');
+      const theatreres = await fetch('http://62.72.59.146:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
         const td =(tdata.map((el) => el.name));   
@@ -33,7 +33,7 @@ export const Allocatemovie = () => {
         console.error('Failed to fetch movie options');
       }
 
-      const allocates = await fetch('http://localhost:3005/allocatedata');
+      const allocates = await fetch('http://62.72.59.146:3005/allocatedata');
       if (allocates.ok) {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreName)
@@ -124,7 +124,7 @@ export const Allocatemovie = () => {
     });
   
    // Make a POST request to the API
-const response = await fetch('http://localhost:3005/allocatedata', {
+const response = await fetch('http://62.72.59.146:3005/allocatedata', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
