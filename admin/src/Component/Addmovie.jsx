@@ -9,6 +9,37 @@ export const Addmovie = () => {
 
   const [movieOption, setMovieOption] = useState([]);
 
+  const [showLinksPopup, setShowLinksPopup] = useState(false);
+
+const toggleLinksPopup = () => {
+  setShowLinksPopup(!showLinksPopup);
+};
+
+
+const renderLinksPopup = () => {
+  if (showLinksPopup) {
+    return (
+      <div className="popup">
+        <p>Here are some poster links:</p>
+        <ol>
+          {/* Add your poster links here */}
+          <li>Dunki: <br /> https://i.postimg.cc/jqX1bSWm/dunki.jpg</li>
+          <li>Ganpath: <br /> https://i.postimg.cc/Pfpy5b5g/Ganapath.jpg</li>
+          <li>Tiger-3: <br /> https://i.postimg.cc/7LSCR6HQ/tiger33.jpg</li>
+          <li>Salaar: <br /> https://i.postimg.cc/zXB3w79B/salaar.jpg</li>
+          <li>Animal: <br /> https://i.postimg.cc/YSzB4K2s/animal-001.jpg</li>
+          <li>Tejas: <br /> https://i.postimg.cc/Jz1fWvWf/Tejas.jpg</li>
+          <li>Yodha: <br /> https://i.postimg.cc/DfQ9Sn5W/Yodha.jpg</li>
+          <li>Aankh Micholi: <br /> https://i.postimg.cc/1585w8dC/Aankh-Micholi.jpg</li>
+          {/* Add more links as needed */}
+        </ol>
+        <button onClick={toggleLinksPopup}>Close</button>
+      </div>
+    );
+  }
+};
+
+
   const fetchMovieOptions = async () => {
     try {
       const response = await fetch('http://localhost:3005/moviedata');
@@ -103,6 +134,11 @@ export const Addmovie = () => {
     }
   };
 
+  const showlink = () => {
+    toggleLinksPopup();
+  };
+  
+
 
   return (
     <div className='main' >
@@ -114,7 +150,9 @@ export const Addmovie = () => {
         </div>
 
         <div>
-          <label htmlFor="poster">Poster Link:</label>
+          {/* <label htmlFor="poster">Poster Link: <span style={{color:"blue"}} onClick={showlink}>Get the poster links</span></label> */}
+          <label htmlFor="poster">Poster Link: <span style={{ color: "blue", cursor: "pointer" }} onClick={showlink}>Get the poster links</span></label>
+          {renderLinksPopup()}
           <input type="text" id="poster" value={poster} onChange={handlePosterChange} />
         </div>
 

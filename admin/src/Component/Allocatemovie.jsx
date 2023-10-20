@@ -143,7 +143,7 @@ if (response.status === 200) {
   }
 } else {
   // Error saving data
-  alert('Error saving data');
+  alert('Please Select Theatre');
 }
 };
 
@@ -181,6 +181,7 @@ if (response.status === 200) {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
+              // console.log(formattedDate)
               
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
@@ -189,7 +190,7 @@ if (response.status === 200) {
                       }
                    }                        
               return (
-                <tr key={day} className={savedRows.includes(day) || val ? 'saved' : ''}>
+                <tr key={day} className={selectedTheatre !=='' && savedRows.includes(day) || val ? 'saved' : ''}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>

@@ -45,3 +45,17 @@
   }
   
   
+
+  /* popup */
+
+  .popup {
+    position: absolute;
+    border-radius: 5px;
+    top: 35%;
+    left: 40%;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
+  }
+  
