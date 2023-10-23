@@ -144,6 +144,7 @@ if (response.status === 200) {
 } else {
   // Error saving data
   alert('Please Select Theatre');
+  window.location.reload(false)
 }
 };
 
