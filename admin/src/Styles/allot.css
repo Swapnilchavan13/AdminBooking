@@ -31,20 +31,23 @@
   .movie-table input[type="checkbox"] {
     margin-right: 5px;
   }
-  
   .saved {
     background-color: #8d8d8d;
-    pointer-events: none;
   }
   .saved input[type="checkbox"] {
     opacity: 0.5; 
     cursor: not-allowed;
   }
-  .saved button{
+  .saved .savebtn{
     background-color: #464545;
+    pointer-events: none;
   }
-  
-  
+
+  .save .delbtn{
+    background-color: #464545;
+    pointer-events: none;
+  }
+
 
   /* popup */
 

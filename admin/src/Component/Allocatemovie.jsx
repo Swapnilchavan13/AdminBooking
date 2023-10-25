@@ -79,6 +79,8 @@ export const Allocatemovie = () => {
     return selectedShowTimes[key] || false;
   };
 
+
+
   const canSelectShowTime = (movieName, day, showTime) => {
     for (const otherMovieName of movieNames) {
       if (otherMovieName !== movieName) {
@@ -94,6 +96,7 @@ export const Allocatemovie = () => {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return daysOfWeek[date.getDay()];
   };
+  
 
   const handleSave = async (day) => {
     const currentDate = new Date(startDate);
@@ -148,6 +151,31 @@ if (response.status === 200) {
 }
 };
 
+const handleDelete = async (_id) => {
+  // Make a DELETE request to the API to delete the data by _id
+  const deleteResponse = await fetch(`http://62.72.59.146:3005/allocatedata/${_id}`, {
+    method: 'DELETE',
+  });
+
+  if (deleteResponse.status === 200) {
+    // Data deleted successfully
+    alert('Data deleted successfully.');
+    window.location.reload(false);
+  } else {
+    // Error deleting data
+    alert('Error deleting data. Please try again later.');
+  }
+}
+// const renderDeleteButton = (day) => {
+//   const currentDate = new Date(startDate);
+//   currentDate.setDate(startDate.getDate() + day);
+//   const formattedDate = currentDate.toLocaleDateString();
+//   const dataToDelete = allocatedata.find(
+//     (entry) => entry.theatreName === selectedTheatre && entry.date === formattedDate
+//   );
+
+
+
   return (
     <div className="main">
       <h1>Allocate Movie</h1>
@@ -191,7 +219,7 @@ if (response.status === 200) {
                       }
                    }                        
               return (
-                <tr key={day} className={selectedTheatre !=='' && savedRows.includes(day) || val ? 'saved' : ''}>
+                <tr key={day} className={selectedTheatre !=='' && savedRows.includes(day) || val ? 'saved' : 'save'}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>
@@ -212,7 +240,13 @@ if (response.status === 200) {
                     </td>
                   ))}
                   <td>
-                    <button onClick={() => handleSave(day)}>{val ? "Saved" : "Save"}</button><br />
+                    <button className='savebtn' onClick={() => handleSave(day)}>{val ? "Saved" : "Save"}</button><br />
+                    {/* <button className='delbtn' onClick={handleDelete}>{val ? "Delete" : "Delete"}</button><br /> */}
+                    {/* <button className='delbtn' onClick={() => handleDelete(dataToDelete?._id)}>
+      {dataToDelete ? "Delete" : "Delete"}
+    </button> */}
+
+
                   </td>
                 </tr>
               );

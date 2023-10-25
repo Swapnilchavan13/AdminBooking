@@ -170,7 +170,6 @@ const renderLinksPopup = () => {
         </select>
       </div>
       <button onClick={deleteMovie}>Delete Movie</button>
-     
     </div>
   );
 }
