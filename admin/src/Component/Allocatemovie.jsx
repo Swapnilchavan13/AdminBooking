@@ -212,7 +212,7 @@ if (response.status === 200) {
                     </td>
                   ))}
                   <td>
-                    <button onClick={() => handleSave(day)}>Save</button><br />
+                    <button onClick={() => handleSave(day)}>{val ? "Saved" : "Save"}</button><br />
                   </td>
                 </tr>
               );
