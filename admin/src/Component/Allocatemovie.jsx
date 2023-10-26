@@ -239,7 +239,6 @@ useEffect(() => {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
-              // console.log(formattedDate)
 
                // Find data corresponding to the date and theatre
             const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);   
