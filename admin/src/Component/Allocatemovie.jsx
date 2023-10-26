@@ -10,6 +10,10 @@ export const Allocatemovie = () => {
   const [allocatedata , setAlloacatedata] = useState([]);
   const [atheatre , setatheatre] = useState([]);
   const [adate , setadate] = useState([]);
+  const [selectedTheatreBeforeDelete, setSelectedTheatreBeforeDelete] = useState(''); // New state variable
+  const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
+
+  
 
   const fetchMovieOptions = async () => {
     try {
@@ -151,30 +155,40 @@ if (response.status === 200) {
 }
 };
 
-const handleDelete = async (_id) => {
-  // Make a DELETE request to the API to delete the data by _id
-  const deleteResponse = await fetch(`http://62.72.59.146:3005/allocatedata/${_id}`, {
-    method: 'DELETE',
-  });
+const handleDelete = async (data) => {
+  try {
+    // Store the selected theatre before deleting
+    setSelectedTheatreBeforeDelete(selectedTheatre);
 
-  if (deleteResponse.status === 200) {
-    // Data deleted successfully
-    alert('Data deleted successfully.');
-    window.location.reload(false);
-  } else {
-    // Error deleting data
-    alert('Error deleting data. Please try again later.');
+    // Make a DELETE request to the API to delete data
+    const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.status === 200) {
+      // Data deleted successfully, update UI
+      const updatedData = allocatedata.filter(item => item._id !== data._id);
+      setAlloacatedata(updatedData);
+      alert('Data Reset Successfully');
+      // Set the delete action flag
+      setDeleteActionTaken(true);
+    } else {
+      alert('Error Reset data');
+    }
+  } catch (error) {
+    console.error('Error deleting data:', error);
   }
-}
-// const renderDeleteButton = (day) => {
-//   const currentDate = new Date(startDate);
-//   currentDate.setDate(startDate.getDate() + day);
-//   const formattedDate = currentDate.toLocaleDateString();
-//   const dataToDelete = allocatedata.find(
-//     (entry) => entry.theatreName === selectedTheatre && entry.date === formattedDate
-//   );
+};
 
-
+useEffect(() => {
+  fetchMovieOptions();
+  // Check if a delete action was taken and if so, select the same theatre again
+  if (deleteActionTaken) {
+    setSelectedTheatre(selectedTheatreBeforeDelete);
+    // Reset the delete action flag
+    setDeleteActionTaken(false);
+  }
+}, [deleteActionTaken]);
 
   return (
     <div className="main">
@@ -211,6 +225,9 @@ const handleDelete = async (_id) => {
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
               // console.log(formattedDate)
+
+               // Find data corresponding to the date and theatre
+            const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);   
               
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
@@ -241,12 +258,7 @@ const handleDelete = async (_id) => {
                   ))}
                   <td>
                     <button className='savebtn' onClick={() => handleSave(day)}>{val ? "Saved" : "Save"}</button><br />
-                    {/* <button className='delbtn' onClick={handleDelete}>{val ? "Delete" : "Delete"}</button><br /> */}
-                    {/* <button className='delbtn' onClick={() => handleDelete(dataToDelete?._id)}>
-      {dataToDelete ? "Delete" : "Delete"}
-    </button> */}
-
-
+                   <button className='delbtn' onClick={() => handleDelete(dataForDay)}>{val ? "Reset" : "Reset"}</button><br />
                   </td>
                 </tr>
               );
