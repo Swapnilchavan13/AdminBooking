@@ -48,11 +48,6 @@
     pointer-events: none;
   }
 
-  .selected-checkbox.selected {
-    background-color: #00ff00; /* Add your desired background color or styling */
-  }
-  
-
   /* popup */
 
   .popup {

@@ -12,6 +12,8 @@ export const Allocatemovie = () => {
   const [adate , setadate] = useState([]);
   const [selectedTheatreBeforeDelete, setSelectedTheatreBeforeDelete] = useState(''); // New state variable
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
+  const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
+
 
   
 
@@ -49,7 +51,7 @@ export const Allocatemovie = () => {
       } else {
         console.error('Failed to fetch movie options');
       }
-
+      setDataFetched(true);
   } catch (error) {
     console.error('Error while fetching movie options:', error);
   }
@@ -120,8 +122,6 @@ export const Allocatemovie = () => {
       movieData: {}
     };
 
-    let atLeastOneTimeslotSelected = false;
-
   
     movieNames.forEach((movieName) => {
       const showTimeData = [];
@@ -140,7 +140,7 @@ export const Allocatemovie = () => {
       setSavedRows([...savedRows, day]);
     });
 
-    if (atLeastOneTimeslotSelected) {
+ 
    // Make a POST request to the API
 const response = await fetch('http://62.72.59.146:3005/allocatedata', {
   method: 'POST',
@@ -158,17 +158,12 @@ if (response.status === 200) {
     alert('Error: Duplicate data');
   } else {
     alert('Data saved successfully');
+    fetchMovieOptions(); // Fetch data again to update the state
   }
 } else {
   // Error saving data
-  alert('Please Select Theatre');
-  window.location.reload(false)
+  alert('Error saving data');
 }
-  }
-    else{
-  alert("please select Showtime")
-  window.location.reload(false)
-  }
 };
 
 const handleDelete = async (data) => {
@@ -205,6 +200,10 @@ useEffect(() => {
     setDeleteActionTaken(false);
   }
 }, [deleteActionTaken]);
+
+ if (!dataFetched) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="main">
