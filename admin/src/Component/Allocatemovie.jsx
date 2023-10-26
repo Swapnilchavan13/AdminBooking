@@ -103,6 +103,13 @@ export const Allocatemovie = () => {
   
 
   const handleSave = async (day) => {
+
+    if (selectedTheatre === '') {
+      // Display an error message or take any other appropriate action
+      alert('Please Select Theatre');
+      return;
+    }
+
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
@@ -112,6 +119,9 @@ export const Allocatemovie = () => {
       theatreName: selectedTheatre,
       movieData: {}
     };
+
+    let atLeastOneTimeslotSelected = false;
+
   
     movieNames.forEach((movieName) => {
       const showTimeData = [];
@@ -129,7 +139,8 @@ export const Allocatemovie = () => {
       }
       setSavedRows([...savedRows, day]);
     });
-  
+
+    if (atLeastOneTimeslotSelected) {
    // Make a POST request to the API
 const response = await fetch('http://62.72.59.146:3005/allocatedata', {
   method: 'POST',
@@ -153,6 +164,11 @@ if (response.status === 200) {
   alert('Please Select Theatre');
   window.location.reload(false)
 }
+  }
+    else{
+  alert("please select Showtime")
+  window.location.reload(false)
+  }
 };
 
 const handleDelete = async (data) => {
