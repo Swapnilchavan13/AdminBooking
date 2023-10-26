@@ -166,7 +166,7 @@ const handleDelete = async (data) => {
     });
 
     if (response.status === 200) {
-      // Data deleted successfully, update UI
+      // Data deleted, update UI
       const updatedData = allocatedata.filter(item => item._id !== data._id);
       setAlloacatedata(updatedData);
       alert('Data Reset Successfully');
