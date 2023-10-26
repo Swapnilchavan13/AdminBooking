@@ -19,6 +19,7 @@ const renderLinksPopup = () => {
   if (showLinksPopup) {
     return (
       <div className="popup">
+        <button onClick={toggleLinksPopup}>Close</button>
         <p>Here are some poster links:</p>
         <ol>
           <li>Dunki: <br /> https://i.postimg.cc/jqX1bSWm/dunki.jpg</li>
@@ -32,7 +33,6 @@ const renderLinksPopup = () => {
           <li>Housefull-5: <br /> https://i.postimg.cc/YSzY4N5c/Housefull5.webp</li>
           <li>Aankh Micholi: <br /> https://i.postimg.cc/1585w8dC/Aankh-Micholi.jpg</li>
         </ol>
-        <button onClick={toggleLinksPopup}>Close</button>
       </div>
     );
   }
