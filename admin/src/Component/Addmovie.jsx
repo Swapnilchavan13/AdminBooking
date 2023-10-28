@@ -146,10 +146,17 @@ const renderLinksPopup = () => {
         </div>
 
         <div>
-          <label htmlFor="poster">Poster Link: <span style={{ color: "blue", cursor: "pointer" }} onClick={showlink}>Get the poster links</span></label>
+          <label htmlFor="poster">Poster Link: <span style={{ color: 'blue', cursor: 'pointer' }} onClick={showlink}>Get the poster links</span></label>
           {renderLinksPopup()}
           <input type="text" id="poster" value={poster} onChange={handlePosterChange} />
         </div>
+
+        {poster && (
+          <div>
+            <h2>Preview</h2>
+            <img width="200px" src={poster} alt="Poster Preview" />
+          </div>
+        )}
 
         <div>
           <label htmlFor="description">Description:</label>
