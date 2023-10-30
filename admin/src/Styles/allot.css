@@ -1,63 +1,66 @@
 .movie-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
+  border-collapse: collapse;
+  width: 100%;
+}
 
-  #selthe{
-    width: 200px;
-  }
-  
-  .movie-table th, .movie-table td {
-    border: 1px solid #464545;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  .movie-table th {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .movie-table th:first-child {
-    background-color: #555;
-  }
-  
-  .movie-table label {
-    display: block;
-    padding: 5px;
-    text-align: center;
-  }
-  
-  .movie-table input[type="checkbox"] {
-    margin-right: 5px;
-  }
-  .saved {
-    background-color: #8d8d8d;
-  }
-  .saved input[type="checkbox"] {
-    opacity: 0.5; 
-    cursor: not-allowed;
-  }
-  .saved .savebtn{
-    background-color: #464545;
-    pointer-events: none;
-  }
+#selthe {
+  width: 200px;
+}
 
-  .save .delbtn{
-    background-color: #464545;
-    pointer-events: none;
-  }
+.movie-table th,
+.movie-table td {
+  border: 1px solid #464545;
+  padding: 8px;
+  text-align: center;
+}
 
-  /* popup */
+.movie-table th {
+  background-color: #333;
+  color: #fff;
+}
 
-  .popup {
-    position: absolute;
-    border-radius: 5px;
-    top: 35%;
-    left: 40%;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    z-index: 1;
-  }
-  
+.movie-table th:first-child {
+  background-color: #555;
+}
+
+.movie-table label {
+  display: block;
+  padding: 5px;
+  text-align: center;
+}
+
+.movie-table input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.saved {
+  background-color: #8d8d8d;
+}
+
+.saved input[type="checkbox"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.saved .savebtn {
+  background-color: #464545;
+  pointer-events: none;
+}
+
+.save .delbtn {
+  background-color: #464545;
+  pointer-events: none;
+}
+
+/* popup */
+
+.popup {
+  position: absolute;
+  border-radius: 5px;
+  top: 35%;
+  left: 40%;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1;
+}

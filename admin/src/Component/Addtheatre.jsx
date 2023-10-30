@@ -6,12 +6,12 @@ export const Addtheatre = () => {
     name: '',
     location: '',
     rows: [],
-    loginid:'',
-    password:''
+    loginid: '',
+    password: ''
   });
 
   const [currentOption, setCurrentOption] = useState('A');
-  const [lastoption, setLastoption]= useState(false);
+  const [lastoption, setLastoption] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +60,7 @@ export const Addtheatre = () => {
       loginid: details.loginid,
       password: details.password,
     };
-  
+
     // Make a POST request using the fetch API
     fetch('http://62.72.59.146:3005/theatredata', {
       method: 'POST',
@@ -89,7 +89,7 @@ export const Addtheatre = () => {
         console.error('Error while saving data:', error);
       });
   };
-  
+
 
   return (
     <div className='main'>
@@ -107,7 +107,7 @@ export const Addtheatre = () => {
 
       <h4>Add Rows And Seats</h4>
       <div>
-      <button disabled={lastoption} onClick={addRow}>Add Row +</button>
+        <button disabled={lastoption} onClick={addRow}>Add Row +</button>
       </div>
 
 
@@ -119,7 +119,7 @@ export const Addtheatre = () => {
           <label>
             Add Seats:
             <select
-            className='seatno'
+              className='seatno'
               value={row.seats}
               onChange={(e) => handleSeatChange(index, parseInt(e.target.value))}
             >
@@ -139,7 +139,7 @@ export const Addtheatre = () => {
       ))}
       <br />
       <label>
-      Create Login Id:
+        Create Login Id:
         <input type="text" name="loginid" value={details.loginid} onChange={handleInputChange} />
       </label>
       <br />

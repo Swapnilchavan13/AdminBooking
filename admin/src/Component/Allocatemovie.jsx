@@ -4,27 +4,24 @@ import '../Styles/allot.css';
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
   const [movieNames, setMovieOption] = useState([]);
-  const [poster, setPoster]=useState([]);
-  const [theaterOptions , setTheaterOptions] =  useState([])
+  const [poster, setPoster] = useState([]);
+  const [theaterOptions, setTheaterOptions] = useState([])
   const [savedRows, setSavedRows] = useState([]);
-  const [allocatedata , setAlloacatedata] = useState([]);
-  const [atheatre , setatheatre] = useState([]);
-  const [adate , setadate] = useState([]);
+  const [allocatedata, setAlloacatedata] = useState([]);
+  const [atheatre, setatheatre] = useState([]);
+  const [adate, setadate] = useState([]);
   const [selectedTheatreBeforeDelete, setSelectedTheatreBeforeDelete] = useState(''); // New state variable
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
-
-
-  
 
   const fetchMovieOptions = async () => {
     try {
       const response = await fetch('http://62.72.59.146:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
-        const pd =(data.map((el) => el.poster));
-        const md =(data.map((el) => el.moviename));
-        setPoster(pd)    
+        const pd = (data.map((el) => el.poster));
+        const md = (data.map((el) => el.moviename));
+        setPoster(pd)
         setMovieOption(md);
       } else {
         console.error('Failed to fetch movie options');
@@ -33,7 +30,7 @@ export const Allocatemovie = () => {
       const theatreres = await fetch('http://62.72.59.146:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
-        const td =(tdata.map((el) => el.name));   
+        const td = (tdata.map((el) => el.name));
         setTheaterOptions(td);
       } else {
         console.error('Failed to fetch movie options');
@@ -47,15 +44,15 @@ export const Allocatemovie = () => {
         setatheatre(aa)
         setadate(dd)
         setAlloacatedata(adata);
-        
+
       } else {
         console.error('Failed to fetch movie options');
       }
       setDataFetched(true);
-  } catch (error) {
-    console.error('Error while fetching movie options:', error);
-  }
-};
+    } catch (error) {
+      console.error('Error while fetching movie options:', error);
+    }
+  };
 
   useEffect(() => {
     fetchMovieOptions();
@@ -85,8 +82,6 @@ export const Allocatemovie = () => {
     return selectedShowTimes[key] || false;
   };
 
-
-
   const canSelectShowTime = (movieName, day, showTime) => {
     for (const otherMovieName of movieNames) {
       if (otherMovieName !== movieName) {
@@ -102,7 +97,6 @@ export const Allocatemovie = () => {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return daysOfWeek[date.getDay()];
   };
-  
 
   const handleSave = async (day) => {
 
@@ -115,17 +109,17 @@ export const Allocatemovie = () => {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
-  
+
     const newData = {
       date: formattedDate,
       theatreName: selectedTheatre,
       movieData: {}
     };
 
-  
+
     movieNames.forEach((movieName) => {
       const showTimeData = [];
-  
+
       showTimes.forEach((showTime) => {
         const key = `${movieName}-${day}-${showTime}`;
         const showTimeValue = selectedShowTimes[key];
@@ -133,75 +127,75 @@ export const Allocatemovie = () => {
           showTimeData.push(showTime);
         }
       });
-  
+
       if (showTimeData.length > 0) {
-        newData.movieData[movieName] = showTimeData;          
+        newData.movieData[movieName] = showTimeData;
       }
       setSavedRows([...savedRows, day]);
     });
 
- 
-   // Make a POST request to the API
-const response = await fetch('http://62.72.59.146:3005/allocatedata', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(newData)
-});
 
-if (response.status === 200) {
-  // Data saved successfully
-  const result = await response.json();
-
-  if (result.message === 'Duplicate data') {
-    alert('Error: Duplicate data');
-  } else {
-    alert('Data saved successfully');
-    fetchMovieOptions(); // Fetch data again to update the state
-  }
-} else {
-  // Error saving data
-  alert('Error saving data');
-}
-};
-
-const handleDelete = async (data) => {
-  try {
-    // Store the selected theatre before deleting
-    setSelectedTheatreBeforeDelete(selectedTheatre);
-
-    // Make a DELETE request to the API to delete data
-    const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
-      method: 'DELETE',
+    // Make a POST request to the API
+    const response = await fetch('http://62.72.59.146:3005/allocatedata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newData)
     });
 
     if (response.status === 200) {
-      // Data deleted, update UI
-      const updatedData = allocatedata.filter(item => item._id !== data._id);
-      setAlloacatedata(updatedData);
-      alert('Data Reset Successfully');
-      // Set the delete action flag
-      setDeleteActionTaken(true);
+      // Data saved successfully
+      const result = await response.json();
+
+      if (result.message === 'Duplicate data') {
+        alert('Error: Duplicate data');
+      } else {
+        alert('Data saved successfully');
+        fetchMovieOptions(); // Fetch data again to update the state
+      }
     } else {
-      alert('Error Reset data');
+      // Error saving data
+      alert('Error saving data');
     }
-  } catch (error) {
-    console.error('Error deleting data:', error);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchMovieOptions();
-  // Check if a delete action was taken and if so, select the same theatre again
-  if (deleteActionTaken) {
-    setSelectedTheatre(selectedTheatreBeforeDelete);
-    // Reset the delete action flag
-    setDeleteActionTaken(false);
-  }
-}, [deleteActionTaken]);
+  const handleDelete = async (data) => {
+    try {
+      // Store the selected theatre before deleting
+      setSelectedTheatreBeforeDelete(selectedTheatre);
 
- if (!dataFetched) {
+      // Make a DELETE request to the API to delete data
+      const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.status === 200) {
+        // Data deleted, update UI
+        const updatedData = allocatedata.filter(item => item._id !== data._id);
+        setAlloacatedata(updatedData);
+        alert('Data Reset Successfully');
+        // Set the delete action flag
+        setDeleteActionTaken(true);
+      } else {
+        alert('Error Reset data');
+      }
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovieOptions();
+    // Check if a delete action was taken and if so, select the same theatre again
+    if (deleteActionTaken) {
+      setSelectedTheatre(selectedTheatreBeforeDelete);
+      // Reset the delete action flag
+      setDeleteActionTaken(false);
+    }
+  }, [deleteActionTaken]);
+
+  if (!dataFetched) {
     return <div>Loading...</div>;
   }
 
@@ -227,8 +221,8 @@ useEffect(() => {
               <th>Movie</th>
               {movieNames.map((movieName, index) => (
                 <th key={movieName}>{movieName}
-                <br />
-                <img width="150px" height="200px" src={poster[index]} alt="" />
+                  <br />
+                  <img width="150px" height="200px" src={poster[index]} alt="" />
                 </th>
               ))}
             </tr>
@@ -240,17 +234,17 @@ useEffect(() => {
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
 
-               // Find data corresponding to the date and theatre
-            const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);   
-              
+              // Find data corresponding to the date and theatre
+              const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);
+
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
                 if (formattedDate === adate[i] && selectedTheatre === atheatre[i]) {
-                    val = true;
-                      }
-                   }                        
+                  val = true;
+                }
+              }
               return (
-                <tr key={day} className={selectedTheatre !=='' && savedRows.includes(day) || val ? 'saved' : 'save'}>
+                <tr key={day} className={selectedTheatre !== '' && savedRows.includes(day) || val ? 'saved' : 'save'}>
                   <td>
                     <h4>{dayOfWeek}</h4>
                     <h5>{formattedDate}</h5>
@@ -272,7 +266,7 @@ useEffect(() => {
                   ))}
                   <td>
                     <button className='savebtn' onClick={() => handleSave(day)}>{val ? "Saved" : "Save"}</button><br />
-                   <button className='delbtn' onClick={() => handleDelete(dataForDay)}>{val ? "Reset" : "Reset"}</button><br />
+                    <button className='delbtn' onClick={() => handleDelete(dataForDay)}>{val ? "Reset" : "Reset"}</button><br />
                   </td>
                 </tr>
               );
