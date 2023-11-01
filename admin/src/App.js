@@ -4,6 +4,7 @@ import { Navbar } from "./Component/Navbar";
 import { Addtheatre } from "./Component/Addtheatre";
 import { Addmovie } from "./Component/Addmovie";
 import { Allocatemovie } from "./Component/Allocatemovie";
+import { All } from "./Component/All";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="addtheatre" element={<Addtheatre />} />
         <Route path="addmovie" element={<Addmovie />} />
         <Route path="allocatemovie" element={<Allocatemovie />} />
+        <Route path="all" element={<All />} />
       </Routes>
     </BrowserRouter>
   );

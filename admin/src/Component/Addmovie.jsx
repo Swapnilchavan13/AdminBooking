@@ -88,6 +88,11 @@ export const Addmovie = () => {
       description: description,
     };
 
+    if(!newData.poster){
+      alert ("Please Attach Poster")
+      return;
+    }
+
     fetch('http://62.72.59.146:3005/moviedata', {
       method: 'POST',
       headers: {

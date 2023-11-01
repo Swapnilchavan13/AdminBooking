@@ -64,3 +64,21 @@
   padding: 10px;
   z-index: 1;
 }
+
+/* Add this to your CSS */
+.movie-cell-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  max-width: 100%; /* Adjust the maximum width as needed */
+}
+
+.movie-cell-hidden {
+  display: none;
+}
+
+.show-more-button {
+  display: block;
+  cursor: pointer;
+}
+

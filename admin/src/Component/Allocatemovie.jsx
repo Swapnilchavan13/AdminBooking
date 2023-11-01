@@ -53,7 +53,6 @@ export const Allocatemovie = () => {
       console.error('Error while fetching movie options:', error);
     }
   };
-
   
   useEffect(() => {
     fetchMovieOptions();
@@ -66,7 +65,7 @@ export const Allocatemovie = () => {
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
-  const days = 14;
+  const days = 104;
 
   const [selectedShowTimes, setSelectedShowTimes] = useState({});
 
@@ -134,7 +133,6 @@ export const Allocatemovie = () => {
       }
       setSavedRows([...savedRows, day]);
     });
-
 
     // Make a POST request to the API
     const response = await fetch('http://62.72.59.146:3005/allocatedata', {
