@@ -24,6 +24,7 @@ export const Addmovie = () => {
           <ol>
             <li>Leo: <br /> https://i.postimg.cc/zXgPFQhP/leo.jpg</li>
             <li>12th Fail: <br /> https://i.postimg.cc/nrzJyK4v/12th-fail.jpg</li>
+            <li>Gadar-2: <br /> https://i.postimg.cc/d3phbWHt/Gadar-2.jpg</li>
             <li>Tejas: <br /> https://i.postimg.cc/Jz1fWvWf/Tejas.jpg</li>
             <li>Tiger-3: <br /> https://i.postimg.cc/7LSCR6HQ/tiger33.jpg</li>
             <li>Aankh Micholi: <br /> https://i.postimg.cc/1585w8dC/Aankh-Micholi.jpg</li>

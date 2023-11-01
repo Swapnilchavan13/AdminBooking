@@ -54,6 +54,7 @@ export const Allocatemovie = () => {
     }
   };
 
+  
   useEffect(() => {
     fetchMovieOptions();
   }, []);
