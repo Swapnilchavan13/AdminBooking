@@ -57,7 +57,8 @@ export const All = () => {
       <table style={tableStyle}>
         <thead>
           <tr style={evenRowStyle}>
-          <th style={thStyle}>Movie Name</th>
+            <th style={thStyle}>Theatre Name</th>
+            <th style={thStyle}>Movie Name</th>
             <th style={thStyle}>Customer Name</th>
             <th style={thStyle}>Gender</th>
             <th style={thStyle}>Payment Method</th>
@@ -71,6 +72,7 @@ export const All = () => {
         <tbody>
           {allData.map((booking, index) => (
             <tr key={index} style={index % 2 === 0 ? evenRowStyle : oddRowStyle}>
+              <td style={tdStyle}>{booking.tname}</td>
               <td style={tdStyle}>{booking.mname}</td>
               <td style={tdStyle}>{booking.customerName}</td>
               <td style={tdStyle}>{booking.gender}</td>
