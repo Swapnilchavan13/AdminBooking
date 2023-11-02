@@ -82,3 +82,10 @@
   cursor: pointer;
 }
 
+.filter{
+  background-color: rgb(125, 148, 148);
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
