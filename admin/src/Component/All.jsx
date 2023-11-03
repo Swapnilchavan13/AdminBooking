@@ -7,6 +7,7 @@ export const All = () => {
     movieName: '',
     date: '',
     showTime: '',
+    pMethod:''
   });
   const apiUrl = 'http://62.72.59.146:3005/bookingdata';
 
@@ -66,6 +67,7 @@ export const All = () => {
   const movies = [...new Set(allData.map((booking) => booking.mname))];
   const dates = [...new Set(allData.map((booking) => booking.sdate))];
   const showTimes = [...new Set(allData.map((booking) => booking.showtime))];
+  const pMethods=[...new Set(allData.map((booking) => booking.paymentMethod))];
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -83,8 +85,10 @@ export const All = () => {
     const dateMatch = filter.date === '' || booking.sdate === filter.date;
     const showTimeMatch =
       filter.showTime === '' || booking.showtime === filter.showTime;
+      const pMethodMatch =
+      filter.pMethod === '' || booking.paymentMethod === filter.pMethod;
 
-    return theaterNameMatch && movieNameMatch && dateMatch && showTimeMatch;
+    return theaterNameMatch && movieNameMatch && dateMatch && showTimeMatch && pMethodMatch;
   });
 
   return (
@@ -132,6 +136,21 @@ export const All = () => {
             {dates.map((date, index) => (
               <option key={index} value={date}>
                 {date}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Payment Method:
+          <select
+            name="pMethod"
+            value={filter.pMethod}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Methods</option>
+            {pMethods.map((payment, index) => (
+              <option key={index} value={payment}>
+                {payment}
               </option>
             ))}
           </select>
