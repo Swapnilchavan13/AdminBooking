@@ -9,6 +9,7 @@ import { All } from "./Component/All";
 function App() {
   return (
     <BrowserRouter>
+      {window.location.pathname !== '/all' && <Navbar />}
       <Routes>
         <Route path="/" element={<Addtheatre />} />
         <Route path="addtheatre" element={<Addtheatre />} />
@@ -16,7 +17,6 @@ function App() {
         <Route path="allocatemovie" element={<Allocatemovie />} />
         <Route path="all" element={<All />} />
       </Routes>
-      {window.location.pathname !== '/all' && <Navbar />}
     </BrowserRouter>
   );
 }
