@@ -200,7 +200,7 @@ export const All = () => {
               <td style={tdStyle}>{booking.sdate}</td>
               <td style={tdStyle}>{booking.showtime}</td>
               <td style={tdStyle}>{booking.seats.join(', ')}</td>
-              <td style={tdStyle}>{calculateAmount(booking.seats)}</td>
+              <td style={tdStyle}>Rs. {calculateAmount(booking.seats)}/-</td>
             </tr>
           ))}
           <tr style={totalRowStyle}>
@@ -214,10 +214,10 @@ export const All = () => {
               )}
             </td>
             <td style={tdStyle}>
-              {filteredData.reduce(
+              Rs. {filteredData.reduce(
                 (total, booking) => total + calculateAmount(booking.seats),
                 0
-              )}
+              )} /-
             </td>
           </tr>
         </tbody>
