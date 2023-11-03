@@ -65,7 +65,7 @@ export const Allocatemovie = () => {
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
-  const days = 104;
+  const days = 14;
 
   const [selectedShowTimes, setSelectedShowTimes] = useState({});
 
@@ -232,6 +232,7 @@ export const Allocatemovie = () => {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
+              console.log(formattedDate)
 
               // Find data corresponding to the date and theatre
               const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);
