@@ -39,7 +39,7 @@ export const All = () => {
     border: '1px solid #ddd',
     padding: '10px',
     textAlign: 'left',
-    minWidth: '120px',
+    minWidth: '80px',
   };
 
   const evenRowStyle = {
@@ -49,9 +49,9 @@ export const All = () => {
   const oddRowStyle = {
     backgroundColor: '#fff',
   };
-
   const headerStyle = {
     background: 'linear-gradient(to right, #4CAF50, #2196F3)',
+
     WebkitBackgroundClip: 'text',
     color: 'transparent',
     fontSize: '36px',
@@ -177,6 +177,7 @@ export const All = () => {
             <th style={thStyle}>Theater Name</th>
             <th style={thStyle}>Movie Name</th>
             <th style={thStyle}>Customer Name</th>
+            <th style={thStyle}>Customer Mobile</th>
             <th style={thStyle}>Gender</th>
             <th style={thStyle}>Payment Method</th>
             <th style={thStyle}>UPI Id</th>
@@ -192,6 +193,7 @@ export const All = () => {
               <td style={tdStyle}>{booking.tname}</td>
               <td style={tdStyle}>{booking.mname}</td>
               <td style={tdStyle}>{booking.customerName}</td>
+              <td style={tdStyle}>{booking.customerMobile}</td>
               <td style={tdStyle}>{booking.gender}</td>
               <td style={tdStyle}>{booking.paymentMethod}</td>
               <td style={tdStyle}>{booking.upiRef || 'NA'}</td>
@@ -202,7 +204,7 @@ export const All = () => {
             </tr>
           ))}
           <tr style={totalRowStyle}>
-            <td colSpan="8" style={tdStyle}>
+            <td colSpan="9" style={tdStyle}>
               Total
             </td>
             <td style={tdStyle}>
