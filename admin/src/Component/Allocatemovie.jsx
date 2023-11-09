@@ -65,7 +65,7 @@ export const Allocatemovie = () => {
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
-  const days = 14;
+  const days = 30;
 
   const [selectedShowTimes, setSelectedShowTimes] = useState({});
 

@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import '../Styles/theatre.css'
 
 export const Addtheatre = () => {
+
+  const adminuser = localStorage.getItem('adminloggedinuser')
+
+  var show = "none"
+
+  if(adminuser == 'user1' || adminuser == 'user2' || adminuser == 'user3'){
+    show="block"
+  }
+  console.log(adminuser)
+
   const [details, setDetails] = useState({
     name: '',
     location: '',
@@ -21,6 +31,7 @@ export const Addtheatre = () => {
     });
   };
 
+  console.log(show)
 
   const addRow = () => {
     let newRow = { option: currentOption, seats: 0 };
@@ -92,8 +103,8 @@ export const Addtheatre = () => {
 
 
   return (
-    <div className='main'>
-      <h1>Add Theatre</h1>
+  <div className='main' style={{display: show}}>
+      <h1>Add Theatre {show}</h1>
       <label>
         Theatre Name:
         <input type="text" name="name" value={details.name} onChange={handleInputChange} />
