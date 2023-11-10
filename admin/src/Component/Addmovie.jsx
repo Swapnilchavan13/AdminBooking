@@ -15,6 +15,14 @@ export const Addmovie = () => {
     setShowLinksPopup(!showLinksPopup);
   };
 
+  const adminuser = localStorage.getItem('adminloggedinuser')
+
+  var show = "none"
+
+  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
+    show="block"
+  }
+
   const renderLinksPopup = () => {
     if (showLinksPopup) {
       return (
@@ -148,7 +156,7 @@ export const Addmovie = () => {
   };
 
   return (
-    <div className='main' >
+    <div className='main' style={{display:show}}>
       <h1>Add Movie</h1>
       <form onSubmit={handleSubmit}>
         <div>

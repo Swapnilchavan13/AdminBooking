@@ -7,10 +7,10 @@ export const Addtheatre = () => {
 
   var show = "none"
 
-  if(adminuser == 'user1' || adminuser == 'user2' || adminuser == 'user3'){
+  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
     show="block"
   }
-  console.log(adminuser)
+  // console.log(adminuser)
 
   const [details, setDetails] = useState({
     name: '',
@@ -104,7 +104,7 @@ export const Addtheatre = () => {
 
   return (
   <div className='main' style={{display: show}}>
-      <h1>Add Theatre {show}</h1>
+      <h1>Add Theatre</h1>
       <label>
         Theatre Name:
         <input type="text" name="name" value={details.name} onChange={handleInputChange} />

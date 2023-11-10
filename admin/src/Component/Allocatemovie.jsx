@@ -14,6 +14,16 @@ export const Allocatemovie = () => {
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
 
+
+  const adminuser = localStorage.getItem('adminloggedinuser')
+
+  var show = "none"
+
+  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
+    show="block"
+  }
+
+
   const fetchMovieOptions = async () => {
     try {
       const response = await fetch('http://62.72.59.146:3005/moviedata');
@@ -111,6 +121,7 @@ export const Allocatemovie = () => {
     const formattedDate = currentDate.toLocaleDateString();
 
     const newData = {
+      admin: adminuser,
       date: formattedDate,
       theatreName: selectedTheatre,
       movieData: {}
@@ -199,7 +210,7 @@ export const Allocatemovie = () => {
   }
 
   return (
-    <div className="main">
+    <div className="main" style={{display:show}}>
       <h1>Allocate Movie</h1>
       <h3>Select Theatre: {selectedTheatre}</h3>
       <div id='selthe'>
