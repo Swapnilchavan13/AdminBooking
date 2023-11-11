@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 export const All = () => {
   const [allData, setAllData] = useState([]);
   const [filter, setFilter] = useState({
+    bookerName:'',
     theaterName: '',
     movieName: '',
     date: '',
@@ -63,6 +64,7 @@ export const All = () => {
     color: 'white',
   };
 
+  const bookers = [...new Set(allData.map((booking) => booking.booker))];
   const theaters = [...new Set(allData.map((booking) => booking.tname))];
   const movies = [...new Set(allData.map((booking) => booking.mname))];
   const dates = [...new Set(allData.map((booking) => booking.sdate))];
@@ -85,10 +87,13 @@ export const All = () => {
     const dateMatch = filter.date === '' || booking.sdate === filter.date;
     const showTimeMatch =
       filter.showTime === '' || booking.showtime === filter.showTime;
-      const pMethodMatch =
+    const pMethodMatch =
       filter.pMethod === '' || booking.paymentMethod === filter.pMethod;
+    const bookerMatch =
+    filter.bookerName === '' || booking.booker === filter.bookerName;
 
-    return theaterNameMatch && movieNameMatch && dateMatch && showTimeMatch && pMethodMatch;
+
+    return theaterNameMatch && movieNameMatch && dateMatch && showTimeMatch && pMethodMatch && bookerMatch;
   });
 
   return (
@@ -151,6 +156,21 @@ export const All = () => {
             {pMethods.map((payment, index) => (
               <option key={index} value={payment}>
                 {payment}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Booker Name:
+          <select
+            name="bookerName"
+            value={filter.bookerName}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Bookers</option>
+            {bookers.map((bookr, index) => (
+              <option key={index} value={bookr}>
+                {bookr}
               </option>
             ))}
           </select>
