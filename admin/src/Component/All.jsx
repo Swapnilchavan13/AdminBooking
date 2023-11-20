@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import * as XLSX from 'xlsx';
 
 export const All = () => {
   const [allData, setAllData] = useState([]);
   const [cseat, setCseat] = useState(0);
+
+  const [isMobileValid, setIsMobileValid] = useState(true);
+
   const [filter, setFilter] = useState({
     bookerName:'',
     theaterName: '',
@@ -21,7 +25,6 @@ export const All = () => {
   }, []);
 
   useEffect(() => {
-    
     const totalSeats = allData.reduce((total, booking) => {
       if (booking.paymentMethod === 'Comp') {
         return total + booking.seats.length;
@@ -31,6 +34,29 @@ export const All = () => {
     setCseat(totalSeats)
 
   }, [allData]); // Ensure that the effect runs whenever allData changes
+
+
+  const handleDownload = () => {
+    const modifiedData = filteredData.map((booking) => ({
+      Movie_Name: booking.mname,
+      Date: booking.sdate,
+      Booker:booking.booker,
+      Customer_Name: booking.customerName,
+      Mobile_Number: booking.customerMobile,
+      Gender: booking.gender,
+      Showtime:booking.showtime,
+      Booked_Seats: booking.seats.join(', '), 
+      Payment_Method : booking.paymentMethod,
+      Upi_Id: booking.upiRef,
+      Booking_Amount: booking.seats.length * 100, 
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(modifiedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'movie_booking_data.xlsx');
+  };
+
 
 
   const calculateAmount = (paymentMethod, seats) => {
@@ -126,7 +152,6 @@ export const All = () => {
           Theater Name:
           <select
             name="theaterName"
-            value={filter.theaterName}
             onChange={handleFilterChange}
           >
             <option value="">All Theaters</option>
@@ -135,6 +160,7 @@ export const All = () => {
                 {theater}
               </option>
             ))}
+            value={filter.theaterName}
           </select>
         </label>
         <label>
@@ -213,6 +239,8 @@ export const All = () => {
           </select>
         </label>
       </div>
+      <button onClick={handleDownload}>Download Excel</button>
+
       <table style={tableStyle}>
         <thead>
           <tr style={evenRowStyle}>
