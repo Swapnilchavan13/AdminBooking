@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 export const All = () => {
   const [allData, setAllData] = useState([]);
+  const [cseat, setCseat] = useState(0);
   const [filter, setFilter] = useState({
     bookerName:'',
     theaterName: '',
@@ -19,8 +20,29 @@ export const All = () => {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
-  const calculateAmount = (seats) => {
-    return seats.length * 100;
+  useEffect(() => {
+    
+    const totalSeats = allData.reduce((total, booking) => {
+      if (booking.paymentMethod === 'Comp') {
+        return total + booking.seats.length;
+      }
+      return total;
+    }, 0);
+    setCseat(totalSeats)
+
+  }, [allData]); // Ensure that the effect runs whenever allData changes
+
+
+  const calculateAmount = (paymentMethod, seats) => {
+    if(paymentMethod ==='Comp'){
+      return seats.length * 0;
+    }
+    if(paymentMethod ==='Cash'){
+      return seats.length * 100;
+    }
+    if(paymentMethod ==='UPI'){
+      return seats.length * 100;
+    }
   };
 
   const tableStyle = {
@@ -220,7 +242,7 @@ export const All = () => {
               <td style={tdStyle}>{booking.sdate}</td>
               <td style={tdStyle}>{booking.showtime}</td>
               <td style={tdStyle}>{booking.seats.join(', ')}</td>
-              <td style={tdStyle}>Rs. {calculateAmount(booking.seats)}/-</td>
+              <td style={tdStyle}>Rs. {calculateAmount((booking.paymentMethod),(booking.seats))}/-</td>
             </tr>
           ))}
           <tr style={totalRowStyle}>
@@ -231,13 +253,13 @@ export const All = () => {
               {filteredData.reduce(
                 (total, booking) => total + booking.seats.length,
                 0
-              )}
+              )} 
             </td>
             <td style={tdStyle}>
               Rs. {filteredData.reduce(
-                (total, booking) => total + calculateAmount(booking.seats),
+                (total, booking) => total + booking.seats.length *100,
                 0
-              )} /-
+              )-(cseat*100)}  /-
             </td>
           </tr>
         </tbody>
