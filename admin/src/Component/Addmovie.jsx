@@ -30,17 +30,11 @@ export const Addmovie = () => {
           <button onClick={toggleLinksPopup}>Close</button>
           <p>Here are some poster links:</p>
           <ol>
-            <li>Leo: <br /> https://i.postimg.cc/zXgPFQhP/leo.jpg</li>
-            <li>12th Fail: <br /> https://i.postimg.cc/nrzJyK4v/12th-fail.jpg</li>
-            <li>Gadar-2: <br /> https://i.postimg.cc/d3phbWHt/Gadar-2.jpg</li>
-            <li>Tejas: <br /> https://i.postimg.cc/Jz1fWvWf/Tejas.jpg</li>
             <li>Tiger-3: <br /> https://i.postimg.cc/7LSCR6HQ/tiger33.jpg</li>
             <li>Aankh Micholi: <br /> https://i.postimg.cc/1585w8dC/Aankh-Micholi.jpg</li>
             <li>Lakeerein: <br />https://i.postimg.cc/Dz8ztXhk/lakeerein.jpg</li>
             <li>The Lady Killer:<br /> https://i.postimg.cc/vBT52Bqc/The-lady-killer.jpg</li>
-            <li>Apurva: <br />https://i.postimg.cc/zX82pwwB/apurva.jpg</li>
             <li>Bombay: <br />https://i.postimg.cc/nLXnrfM6/bombay.jpg </li>
-            <li>Farrey: <br />https://i.postimg.cc/zBLFX7mJ/farrey.jpg</li>
             <li>Dunki: <br /> https://i.postimg.cc/jqX1bSWm/dunki.jpg</li>
             <li>Salaar: <br /> https://i.postimg.cc/zXB3w79B/salaar.jpg</li>
             <li>Animal: <br /> https://i.postimg.cc/YSzB4K2s/animal-001.jpg</li>

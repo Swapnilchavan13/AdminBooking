@@ -8,12 +8,12 @@ export const All = () => {
   const [isMobileValid, setIsMobileValid] = useState(true);
 
   const [filter, setFilter] = useState({
-    bookerName:'',
+    bookerName: '',
     theaterName: '',
     movieName: '',
     date: '',
     showTime: '',
-    pMethod:''
+    pMethod: ''
   });
   const apiUrl = 'http://62.72.59.146:3005/bookingdata';
 
@@ -40,15 +40,15 @@ export const All = () => {
     const modifiedData = filteredData.map((booking) => ({
       Movie_Name: booking.mname,
       Date: booking.sdate,
-      Booker:booking.booker,
+      Booker: booking.booker,
       Customer_Name: booking.customerName,
       Mobile_Number: booking.customerMobile,
       Gender: booking.gender,
-      Showtime:booking.showtime,
-      Booked_Seats: booking.seats.join(', '), 
-      Payment_Method : booking.paymentMethod,
+      Showtime: booking.showtime,
+      Booked_Seats: booking.seats.join(', '),
+      Payment_Method: booking.paymentMethod,
       Upi_Id: booking.upiRef,
-      Booking_Amount: booking.seats.length * 100, 
+      Booking_Amount: booking.seats.length * 100,
     }));
 
     const ws = XLSX.utils.json_to_sheet(modifiedData);
@@ -57,16 +57,14 @@ export const All = () => {
     XLSX.writeFile(wb, 'movie_booking_data.xlsx');
   };
 
-
-
   const calculateAmount = (paymentMethod, seats) => {
-    if(paymentMethod ==='Comp'){
+    if (paymentMethod === 'Comp') {
       return seats.length * 0;
     }
-    if(paymentMethod ==='Cash'){
+    if (paymentMethod === 'Cash') {
       return seats.length * 100;
     }
-    if(paymentMethod ==='UPI'){
+    if (paymentMethod === 'UPI') {
       return seats.length * 100;
     }
   };
@@ -117,7 +115,7 @@ export const All = () => {
   const movies = [...new Set(allData.map((booking) => booking.mname))];
   const dates = [...new Set(allData.map((booking) => booking.sdate))];
   const showTimes = [...new Set(allData.map((booking) => booking.showtime))];
-  const pMethods=[...new Set(allData.map((booking) => booking.paymentMethod))];
+  const pMethods = [...new Set(allData.map((booking) => booking.paymentMethod))];
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -138,7 +136,7 @@ export const All = () => {
     const pMethodMatch =
       filter.pMethod === '' || booking.paymentMethod === filter.pMethod;
     const bookerMatch =
-    filter.bookerName === '' || booking.booker === filter.bookerName;
+      filter.bookerName === '' || booking.booker === filter.bookerName;
 
 
     return theaterNameMatch && movieNameMatch && dateMatch && showTimeMatch && pMethodMatch && bookerMatch;
@@ -270,7 +268,7 @@ export const All = () => {
               <td style={tdStyle}>{booking.sdate}</td>
               <td style={tdStyle}>{booking.showtime}</td>
               <td style={tdStyle}>{booking.seats.join(', ')}</td>
-              <td style={tdStyle}>Rs. {calculateAmount((booking.paymentMethod),(booking.seats))}/-</td>
+              <td style={tdStyle}>Rs. {calculateAmount((booking.paymentMethod), (booking.seats))}/-</td>
             </tr>
           ))}
           <tr style={totalRowStyle}>
@@ -281,13 +279,13 @@ export const All = () => {
               {filteredData.reduce(
                 (total, booking) => total + booking.seats.length,
                 0
-              )} 
+              )}
             </td>
             <td style={tdStyle}>
               Rs. {filteredData.reduce(
-                (total, booking) => total + booking.seats.length *100,
+                (total, booking) => total + booking.seats.length * 100,
                 0
-              )-(cseat*100)}  /-
+              ) - (cseat * 100)} /-
             </td>
           </tr>
         </tbody>
