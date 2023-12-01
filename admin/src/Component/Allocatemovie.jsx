@@ -19,8 +19,8 @@ export const Allocatemovie = () => {
 
   var show = "none"
 
-  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
-    show="block"
+  if (adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3') {
+    show = "block"
   }
 
 
@@ -63,7 +63,7 @@ export const Allocatemovie = () => {
       console.error('Error while fetching movie options:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchMovieOptions();
   }, []);
@@ -210,7 +210,7 @@ export const Allocatemovie = () => {
   }
 
   return (
-    <div className="main" style={{display:show}}>
+    <div className="main" style={{ display: show }}>
       <h1>Allocate Movie</h1>
       <h3>Select Theatre: {selectedTheatre}</h3>
       <div id='selthe'>
