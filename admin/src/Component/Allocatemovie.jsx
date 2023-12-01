@@ -72,7 +72,7 @@ export const Allocatemovie = () => {
     setSelectedTheatre(event.target.value);
   };
 
-  const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "6:00 PM", "9:00 PM"];
+  const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "4:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
   const days = 30;
