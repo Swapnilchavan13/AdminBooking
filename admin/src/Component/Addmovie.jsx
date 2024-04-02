@@ -23,7 +23,7 @@ export const Addmovie = () => {
 
   const adminuser = localStorage.getItem('adminloggedinuser');
   var show = "none";
-  if(adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3'){
+  if (adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3') {
     show = "block";
   }
 

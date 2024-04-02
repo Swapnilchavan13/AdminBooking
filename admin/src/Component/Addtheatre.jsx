@@ -5,7 +5,7 @@ export const Addtheatre = () => {
   const adminuser = localStorage.getItem('adminloggedinuser');
   var show = "none";
 
-  if(adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3'){
+  if (adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3') {
     show = "block";
   }
 
@@ -113,9 +113,9 @@ export const Addtheatre = () => {
 
 
   return (
-    <div className='main' style={{display: show}}>
+    <div className='main' style={{ display: show }}>
       <h1>Add Theatre</h1>
-     
+
       <label>
         Theatre Name:
         <input type="text" name="theatreName" value={details.theatreName} onChange={handleInputChange} />
@@ -198,7 +198,7 @@ export const Addtheatre = () => {
         </div>
       ))}
       <br />
-     
+
       <button onClick={handleSave}>Save</button>
     </div>
   );
