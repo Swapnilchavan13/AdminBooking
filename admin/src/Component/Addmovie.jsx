@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import '../Styles/movie.css'
+import '../Styles/movie.css';
 
 export const Addmovie = () => {
   const [moviename, setMoviename] = useState('');
-  const [poster, setPoster] = useState(null);
-  const [description, setDescription] = useState('');
+  const [poster, setPoster] = useState('');
+  const [movieDesc, setMovieDesc] = useState('');
+  const [movieRuntime, setMovieRuntime] = useState('');
+  const [intervalTime, setIntervalTime] = useState('');
+  const [productionHouse, setProductionHouse] = useState('');
+  const [dateTime, setDateTime] = useState(new Date());
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState('');
-
   const [movieOption, setMovieOption] = useState([]);
-
   const [showLinksPopup, setShowLinksPopup] = useState(false);
 
   const toggleLinksPopup = () => {
     setShowLinksPopup(!showLinksPopup);
   };
 
-  const adminuser = localStorage.getItem('adminloggedinuser')
-
-  var show = "none"
-
-  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
-    show="block"
+  const adminuser = localStorage.getItem('adminloggedinuser');
+  var show = "none";
+  if(adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3'){
+    show = "block";
   }
 
   const renderLinksPopup = () => {
@@ -48,10 +52,10 @@ export const Addmovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://62.72.59.146:3005/moviedata');
+      const response = await fetch('http://localhost:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setMovieOption(data);
       } else {
         console.error('Failed to fetch movie options');
@@ -77,25 +81,58 @@ export const Addmovie = () => {
     setPoster(e.target.value);
   };
 
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
+
+  const handleMovieDescChange = (e) => {
+    setMovieDesc(e.target.value);
+  };
+
+  const handleMovieRuntimeChange = (e) => {
+    setMovieRuntime(e.target.value);
+  };
+
+  const handleIntervalTimeChange = (e) => {
+    setIntervalTime(e.target.value);
+  };
+
+  const handleProductionHouseChange = (e) => {
+    setProductionHouse(e.target.value);
+  };
+
+  const handleDateTimeChange = (e) => {
+    setDateTime(e.target.value);
+  };
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newData = {
-      moviename: moviename,
-      poster: poster,
-      description: description,
+      movieName: moviename,
+      posterImage: poster,
+      movieDesc: movieDesc,
+      movieRuntime: movieRuntime,
+      intervalTime: intervalTime,
+      productionHouse: productionHouse,
+      dateTime: dateTime,
+      startDate: startDate,
+      endDate: endDate,
+      isDeleted: isDeleted,
+      isExpired: isExpired,
     };
 
-    if(!newData.poster){
-      alert ("Please Attach Poster")
+    if (!newData.posterImage) {
+      alert("Please Attach Poster");
       return;
     }
 
-    fetch('http://62.72.59.146:3005/moviedata', {
+    fetch('http://localhost:3005/moviedata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,7 +144,15 @@ export const Addmovie = () => {
           alert('Data saved successfully');
           setMoviename('');
           setPoster('');
-          setDescription('');
+          setMovieDesc('');
+          setMovieRuntime('');
+          setIntervalTime('');
+          setProductionHouse('');
+          setDateTime('');
+          setStartDate('');
+          setEndDate('');
+          setIsDeleted(false);
+          setIsExpired(false);
           fetchMovieOptions(); // Refresh movie options after adding a new movie
         } else {
           alert('Failed to save data');
@@ -120,9 +165,9 @@ export const Addmovie = () => {
 
   const deleteMovie = () => {
     if (selectedMovie) {
-      const movieToDelete = movieOption.find((movie) => movie.moviename === selectedMovie);
+      const movieToDelete = movieOption.find((movie) => movie.movieName === selectedMovie);
       if (movieToDelete) {
-        fetch(`http://62.72.59.146:3005/moviedata/${movieToDelete._id}`, {
+        fetch(`http://localhost:3005/moviedata/${movieToDelete._id}`, {
           method: 'DELETE',
         })
           .then((response) => {
@@ -150,7 +195,7 @@ export const Addmovie = () => {
   };
 
   return (
-    <div className='main' style={{display:show}}>
+    <div className='main' style={{ display: show }}>
       <h1>Add Movie</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -171,11 +216,42 @@ export const Addmovie = () => {
           </div>
         )}
 
+
         <div>
-          <label htmlFor="description">Description:</label>
-          <textarea id="description" value={description} onChange={handleDescriptionChange} />
+          <label htmlFor="movieDesc">Movie Description:</label>
+          <textarea id="movieDesc" value={movieDesc} onChange={handleMovieDescChange} />
         </div>
 
+        <div>
+          <label htmlFor="movieRuntime">Movie Runtime:</label>
+          <input type="text" id="movieRuntime" value={movieRuntime} onChange={handleMovieRuntimeChange} />
+        </div>
+
+        <div>
+          <label htmlFor="intervalTime">Interval Time:</label>
+          <input type="text" id="intervalTime" value={intervalTime} onChange={handleIntervalTimeChange} />
+        </div>
+
+        <div>
+          <label htmlFor="productionHouse">Production House:</label>
+          <input type="text" id="productionHouse" value={productionHouse} onChange={handleProductionHouseChange} />
+        </div>
+
+        <div>
+          <label htmlFor="dateTime">Date and Time:</label>
+          <input type="text" id="dateTime" value={new Date()} onChange={handleDateTimeChange} />
+        </div>
+
+        <div>
+          <label htmlFor="startDate">Start Date:</label>
+          <input type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+        </div>
+
+        <div>
+          <label htmlFor="endDate">End Date:</label>
+          <input type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
+        </div>
+        <br />
         <button type="submit">Add Movie</button>
       </form>
 
@@ -184,8 +260,8 @@ export const Addmovie = () => {
         <select value={selectedMovie} onChange={handleMovieChange}>
           <option value="">Select Movie</option>
           {movieOption.map((movie, index) => (
-            <option key={index} value={movie.moviename}>
-              {movie.moviename}
+            <option key={index} value={movie.movieName}>
+              {movie.movieName}
             </option>
           ))}
         </select>
@@ -193,4 +269,4 @@ export const Addmovie = () => {
       <button onClick={deleteMovie}>Delete Movie</button>
     </div>
   );
-}
+};

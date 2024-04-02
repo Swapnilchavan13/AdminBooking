@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
-import '../Styles/theatre.css'
+import '../Styles/theatre.css';
 
 export const Addtheatre = () => {
+  const adminuser = localStorage.getItem('adminloggedinuser');
+  var show = "none";
 
-  const adminuser = localStorage.getItem('adminloggedinuser')
-
-  var show = "none"
-
-  if(adminuser == 'admin1' || adminuser == 'admin2' || adminuser == 'admin3'){
-    show="block"
+  if(adminuser === 'admin1' || adminuser === 'admin2' || adminuser === 'admin3'){
+    show = "block";
   }
-  // console.log(adminuser)
 
   const [details, setDetails] = useState({
-    name: '',
-    location: '',
+    theatreName: '',
+    theatreLocation: '',
+    theatreCity: '',
+    theatrePinCode: '',
+    theatreOperatorEmail: '',
+    theatreOperatorContact: '',
+    theatreOperatorName: '',
+    theatreOperatorIDproof: '',
+    theaterScreens: 1,
+    isDeleted: false,
     rows: [],
-    loginid: '',
-    password: ''
   });
 
   const [currentOption, setCurrentOption] = useState('A');
@@ -31,12 +34,10 @@ export const Addtheatre = () => {
     });
   };
 
-  console.log(show)
-
   const addRow = () => {
     let newRow = { option: currentOption, seats: 0 };
     if (currentOption === 'D') {
-      setLastoption(true)
+      setLastoption(true);
       newRow = { option: 'D', seats: 0, disabled: true };
     }
 
@@ -63,17 +64,21 @@ export const Addtheatre = () => {
   };
 
   const handleSave = () => {
-    // Prepare the data to be sent in the request body
     const newData = {
-      name: details.name,
-      location: details.location,
+      theatreName: details.theatreName,
+      theatreLocation: details.theatreLocation,
+      theatreCity: details.theatreCity,
+      theatrePinCode: details.theatrePinCode,
+      theatreOperatorEmail: details.theatreOperatorEmail,
+      theatreOperatorContact: details.theatreOperatorContact,
+      theatreOperatorName: details.theatreOperatorName,
+      theatreOperatorIDproof: details.theatreOperatorIDproof,
+      theaterScreens: details.theaterScreens,
+      isDeleted: details.isDeleted,
       rows: details.rows,
-      loginid: details.loginid,
-      password: details.password,
     };
 
-    // Make a POST request using the fetch API
-    fetch('http://62.72.59.146:3005/theatredata', {
+    fetch('http://localhost:3005/theatredata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -83,13 +88,18 @@ export const Addtheatre = () => {
       .then((response) => {
         if (response.ok) {
           alert('Data saved successfully');
-          // Clear the form or reset it as needed
           setDetails({
-            name: '',
-            location: '',
+            theatreName: '',
+            theatreLocation: '',
+            theatreCity: '',
+            theatrePinCode: '',
+            theatreOperatorEmail: '',
+            theatreOperatorContact: '',
+            theatreOperatorName: '',
+            theatreOperatorIDproof: '',
+            theaterScreens: 1,
+            isDeleted: false,
             rows: [],
-            loginid: '',
-            password: '',
           });
           window.location.reload(false);
         } else {
@@ -103,16 +113,57 @@ export const Addtheatre = () => {
 
 
   return (
-  <div className='main' style={{display: show}}>
+    <div className='main' style={{display: show}}>
       <h1>Add Theatre</h1>
+     
       <label>
         Theatre Name:
-        <input type="text" name="name" value={details.name} onChange={handleInputChange} />
+        <input type="text" name="theatreName" value={details.theatreName} onChange={handleInputChange} />
       </label>
       <br />
       <label>
-        Location:
-        <input type="text" name="location" value={details.location} onChange={handleInputChange} />
+        Theatre Location:
+        <input type="text" name="theatreLocation" value={details.theatreLocation} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre City:
+        <input type="text" name="theatreCity" value={details.theatreCity} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre PinCode:
+        <input type="text" name="theatrePinCode" value={details.theatrePinCode} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre Operator Email:
+        <input type="text" name="theatreOperatorEmail" value={details.theatreOperatorEmail} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre Operator Contact:
+        <input type="text" name="theatreOperatorContact" value={details.theatreOperatorContact} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre Operator Name:
+        <input type="text" name="theatreOperatorName" value={details.theatreOperatorName} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theatre Operator IDproof:
+        <input type="text" name="theatreOperatorIDproof" value={details.theatreOperatorIDproof} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Theater Screens:
+        <select name="theaterScreens" value={details.theaterScreens} onChange={handleInputChange}>
+          <option value="">Select Screens</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
       </label>
       <br />
 
@@ -120,7 +171,6 @@ export const Addtheatre = () => {
       <div>
         <button disabled={lastoption} onClick={addRow}>Add Row +</button>
       </div>
-
 
       {details.rows.map((row, index) => (
         <div key={index}>
@@ -134,33 +184,22 @@ export const Addtheatre = () => {
               value={row.seats}
               onChange={(e) => handleSeatChange(index, parseInt(e.target.value))}
             >
-              <option value={0}>Seats</option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
               <option value={4}>4</option>
               <option value={5}>5</option>
               <option value={6}>6</option>
               <option value={7}>7</option>
               <option value={8}>8</option>
               <option value={9}>9</option>
+              <option value={10}>10</option>
+              <option value={11}>11</option>
+              <option value={12}>12</option>
             </select>
           </label>
         </div>
       ))}
       <br />
-      <label>
-        Create Login Id:
-        <input type="text" name="loginid" value={details.loginid} onChange={handleInputChange} />
-      </label>
-      <br />
-      <label>
-        Create Password:
-        <input type="text" name="password" value={details.password} onChange={handleInputChange} />
-      </label>
-      <br />
+     
       <button onClick={handleSave}>Save</button>
-      {/* <Addmovie /> */}
     </div>
   );
 };

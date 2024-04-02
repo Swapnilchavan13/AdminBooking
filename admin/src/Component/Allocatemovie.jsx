@@ -3,17 +3,19 @@ import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
+  const [selectedScreen, setSelectedScreen] = useState('');
+
   const [movieNames, setMovieOption] = useState([]);
   const [poster, setPoster] = useState([]);
-  const [theaterOptions, setTheaterOptions] = useState([])
+  const [theaterOptions, setTheaterOptions] = useState({})
   const [savedRows, setSavedRows] = useState([]);
   const [allocatedata, setAlloacatedata] = useState([]);
   const [atheatre, setatheatre] = useState([]);
   const [adate, setadate] = useState([]);
+
   const [selectedTheatreBeforeDelete, setSelectedTheatreBeforeDelete] = useState(''); // New state variable
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
-
 
   const adminuser = localStorage.getItem('adminloggedinuser')
 
@@ -26,30 +28,48 @@ export const Allocatemovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://62.72.59.146:3005/moviedata');
+      const response = await fetch('http://localhost:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
-        const pd = (data.map((el) => el.poster));
-        const md = (data.map((el) => el.moviename));
+
+        var movieData = {};
+        data.forEach((movie) => {
+          movieData[movie.movieName] = movie._id;
+        });
+
+        const pd = (data.map((el) => el.posterImage));
+        const md = (data.map((el) => el.movieName));
+
         setPoster(pd)
         setMovieOption(md);
       } else {
         console.error('Failed to fetch movie options');
       }
 
-      const theatreres = await fetch('http://62.72.59.146:3005/theatredata');
+
+      console.log(movieData)
+
+      const theatreres = await fetch('http://localhost:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
-        const td = (tdata.map((el) => el.name));
-        setTheaterOptions(td);
+        
+        // Extract theatre names and IDs from the response
+        const theaterOptions = tdata.map((el) => ({
+          name: el.theatreName,
+          id: el._id,
+          screen: el.theaterScreens
+        }));
+      
+        setTheaterOptions(theaterOptions);
       } else {
         console.error('Failed to fetch movie options');
       }
+      
 
-      const allocates = await fetch('http://62.72.59.146:3005/allocatedata');
+      const allocates = await fetch('http://localhost:3005/allocatedata');
       if (allocates.ok) {
         const adata = await allocates.json();
-        const aa = adata.map((el) => el.theatreName)
+        const aa = adata.map((el) => el.theatreId)
         const dd = adata.map((el) => el.date)
         setatheatre(aa)
         setadate(dd)
@@ -72,6 +92,10 @@ export const Allocatemovie = () => {
     setSelectedTheatre(event.target.value);
   };
 
+  const handleScreenChange = (event) => {
+    setSelectedScreen(event.target.value);
+  };
+  
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "4:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
@@ -123,7 +147,8 @@ export const Allocatemovie = () => {
     const newData = {
       admin: adminuser,
       date: formattedDate,
-      theatreName: selectedTheatre,
+      theatreId: selectedTheatre,
+      selectedscreen: selectedScreen,
       movieData: {}
     };
 
@@ -146,7 +171,7 @@ export const Allocatemovie = () => {
     });
 
     // Make a POST request to the API
-    const response = await fetch('http://62.72.59.146:3005/allocatedata', {
+    const response = await fetch('http://localhost:3005/allocatedata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -176,7 +201,7 @@ export const Allocatemovie = () => {
       setSelectedTheatreBeforeDelete(selectedTheatre);
 
       // Make a DELETE request to the API to delete data
-      const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
+      const response = await fetch(`http://localhost:3005/allocatedata/${data._id}`, {
         method: 'DELETE',
       });
 
@@ -213,16 +238,29 @@ export const Allocatemovie = () => {
     <div className="main" style={{ display: show }}>
       <h1>Allocate Movie</h1>
       <h3>Select Theatre: {selectedTheatre}</h3>
+
       <div id='selthe'>
-        <select value={selectedTheatre} onChange={handleTheatreChange}>
-          <option value="">Select Theatre</option>
-          {theaterOptions.map((theatre, index) => (
-            <option key={index} value={theatre}>
-              {theatre}
-            </option>
-          ))}
-        </select>
-      </div>
+  <select value={selectedTheatre} onChange={handleTheatreChange}>
+    <option value="">Select Theatre</option>
+    {theaterOptions.map((theatre, index) => (
+      <option key={index} value={theatre.id}>
+        {theatre.name}
+      </option>
+    ))}
+  </select>
+</div>
+
+<div id='selthe'>
+  <select value={selectedScreen} onChange={handleScreenChange}>
+    <option value="">Select Screen</option>
+    {theaterOptions.map((theatre, index) => (
+      <option key={index} value={theatre.screen}>
+        {theatre.screen}
+      </option>
+    ))}
+  </select>
+</div>
+
       <br />
       <div>
         <table className="movie-table">
@@ -243,10 +281,9 @@ export const Allocatemovie = () => {
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
-              console.log(formattedDate)
 
               // Find data corresponding to the date and theatre
-              const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreName === selectedTheatre);
+              const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreId === selectedTheatre);
 
               var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
