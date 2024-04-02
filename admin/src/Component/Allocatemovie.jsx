@@ -52,19 +52,19 @@ export const Allocatemovie = () => {
       const theatreres = await fetch('http://localhost:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
-        
+
         // Extract theatre names and IDs from the response
         const theaterOptions = tdata.map((el) => ({
           name: el.theatreName,
           id: el._id,
           screen: el.theaterScreens
         }));
-      
+
         setTheaterOptions(theaterOptions);
       } else {
         console.error('Failed to fetch movie options');
       }
-      
+
 
       const allocates = await fetch('http://localhost:3005/allocatedata');
       if (allocates.ok) {
@@ -95,7 +95,7 @@ export const Allocatemovie = () => {
   const handleScreenChange = (event) => {
     setSelectedScreen(event.target.value);
   };
-  
+
   const showTimes = ["9:00 AM", "12:00 PM", "3:00 PM", "4:00 PM", "6:00 PM", "9:00 PM"];
 
   const startDate = new Date(); // Set your start date here
@@ -240,26 +240,26 @@ export const Allocatemovie = () => {
       <h3>Select Theatre: {selectedTheatre}</h3>
 
       <div id='selthe'>
-  <select value={selectedTheatre} onChange={handleTheatreChange}>
-    <option value="">Select Theatre</option>
-    {theaterOptions.map((theatre, index) => (
-      <option key={index} value={theatre.id}>
-        {theatre.name}
-      </option>
-    ))}
-  </select>
-</div>
+        <select value={selectedTheatre} onChange={handleTheatreChange}>
+          <option value="">Select Theatre</option>
+          {theaterOptions.map((theatre, index) => (
+            <option key={index} value={theatre.id}>
+              {theatre.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-<div id='selthe'>
-  <select value={selectedScreen} onChange={handleScreenChange}>
-    <option value="">Select Screen</option>
-    {theaterOptions.map((theatre, index) => (
-      <option key={index} value={theatre.screen}>
-        {theatre.screen}
-      </option>
-    ))}
-  </select>
-</div>
+      <div id='selthe'>
+        <select value={selectedScreen} onChange={handleScreenChange}>
+          <option value="">Select Screen</option>
+          {theaterOptions.map((theatre, index) => (
+            <option key={index} value={theatre.screen}>
+              {theatre.screen}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <br />
       <div>
