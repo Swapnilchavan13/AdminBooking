@@ -52,7 +52,7 @@ export const Addmovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://localhost:3005/moviedata');
+      const response = await fetch('http://62.72.59.146:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -132,7 +132,7 @@ export const Addmovie = () => {
       return;
     }
 
-    fetch('http://localhost:3005/moviedata', {
+    fetch('http://62.72.59.146:3005/moviedata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export const Addmovie = () => {
     if (selectedMovie) {
       const movieToDelete = movieOption.find((movie) => movie.movieName === selectedMovie);
       if (movieToDelete) {
-        fetch(`http://localhost:3005/moviedata/${movieToDelete._id}`, {
+        fetch(`http://62.72.59.146:3005/moviedata/${movieToDelete._id}`, {
           method: 'DELETE',
         })
           .then((response) => {
