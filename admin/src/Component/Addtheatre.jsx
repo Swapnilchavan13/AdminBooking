@@ -78,7 +78,7 @@ export const Addtheatre = () => {
       rows: details.rows,
     };
 
-    fetch('http://localhost:3005/theatredata', {
+    fetch('http://62.72.59.146:3005/theatredata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
