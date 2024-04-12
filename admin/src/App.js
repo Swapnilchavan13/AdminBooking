@@ -6,6 +6,7 @@ import { Addmovie } from "./Component/Addmovie";
 import { Allocatemovie } from "./Component/Allocatemovie";
 import { All } from "./Component/All";
 import { Login } from "./Component/Login";
+import { Addscreen } from "./Component/Addscreen";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="addtheatre" element={<Addtheatre />} />
+        <Route path="addscreen" element={<Addscreen />} />
         <Route path="addmovie" element={<Addmovie />} />
         <Route path="allocatemovie" element={<Allocatemovie />} />
         <Route path="all" element={<All />} />

@@ -3,10 +3,14 @@ import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
+  const [theatreName, setTheatreName] = useState('');
+
   const [selectedScreen, setSelectedScreen] = useState('');
 
   const [movieNames, setMovieOption] = useState([]);
   const [poster, setPoster] = useState([]);
+  const [desc, setDesc] = useState([]);
+
   const [theaterOptions, setTheaterOptions] = useState({})
   const [savedRows, setSavedRows] = useState([]);
   const [allocatedata, setAlloacatedata] = useState([]);
@@ -42,12 +46,12 @@ export const Allocatemovie = () => {
 
         setPoster(pd)
         setMovieOption(md);
+
       } else {
         console.error('Failed to fetch movie options');
       }
 
-
-      console.log(movieData)
+      // console.log(movieData)
 
       const theatreres = await fetch('http://localhost:3005/theatredata');
       if (theatreres.ok) {
@@ -64,7 +68,6 @@ export const Allocatemovie = () => {
       } else {
         console.error('Failed to fetch movie options');
       }
-
 
       const allocates = await fetch('http://localhost:3005/allocatedata');
       if (allocates.ok) {
@@ -133,29 +136,40 @@ export const Allocatemovie = () => {
   };
 
   const handleSave = async (day) => {
-
-    if (selectedTheatre === '') {
+    if (selectedTheatre === '' || selectedScreen === '') {
       // Display an error message or take any other appropriate action
-      alert('Please Select Theatre');
+      alert('Please Select Theatre and Screen');
       return;
     }
-
+  
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
-
+  
     const newData = {
       admin: adminuser,
       date: formattedDate,
       theatreId: selectedTheatre,
+      theatreName: theaterOptions.find(theatre => theatre.id === selectedTheatre).name, // Include theater name
       selectedscreen: selectedScreen,
-      movieData: {}
+      description:'',
+      movieData: {},
+      photo: poster,
+      isActive: false,
+      startDate: new Date(), // Set start date as current date
+      endDate: new Date(new Date().setDate(new Date().getDate() + 1)), // Set end date as the next date    
+      startDate_EP:'',
+      endDate_EP:'',
+      category: '',
+      totalLikes:0,
+      totalComments: 0,
+      likedBy:{},
+      screenId: selectedScreen
     };
-
-
+  
     movieNames.forEach((movieName) => {
       const showTimeData = [];
-
+  
       showTimes.forEach((showTime) => {
         const key = `${movieName}-${day}-${showTime}`;
         const showTimeValue = selectedShowTimes[key];
@@ -163,37 +177,42 @@ export const Allocatemovie = () => {
           showTimeData.push(showTime);
         }
       });
-
+  
       if (showTimeData.length > 0) {
         newData.movieData[movieName] = showTimeData;
       }
       setSavedRows([...savedRows, day]);
     });
-
-    // Make a POST request to the API
-    const response = await fetch('http://localhost:3005/allocatedata', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newData)
-    });
-
-    if (response.status === 200) {
-      // Data saved successfully
-      const result = await response.json();
-
-      if (result.message === 'Duplicate data') {
-        alert('Error: Duplicate data');
+  
+    try {
+      // Make a POST request to the API
+      const response = await fetch('http://localhost:3005/allocatedata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newData)
+      });
+  
+      if (response.status === 200) {
+        // Data saved successfully
+        const result = await response.json();
+  
+        if (result.message === 'Duplicate data') {
+          alert('Error: Duplicate data');
+        } else {
+          alert('Data saved successfully');
+          fetchMovieOptions(); // Fetch data again to update the state
+        }
       } else {
-        alert('Data saved successfully');
-        fetchMovieOptions(); // Fetch data again to update the state
+        // Error saving data
+        alert('Error saving data');
       }
-    } else {
-      // Error saving data
-      alert('Error saving data');
+    } catch (error) {
+      console.error('Error while saving data:', error);
     }
   };
+  
 
   const handleDelete = async (data) => {
     try {
@@ -201,7 +220,7 @@ export const Allocatemovie = () => {
       setSelectedTheatreBeforeDelete(selectedTheatre);
 
       // Make a DELETE request to the API to delete data
-      const response = await fetch(`http://localhost:3005/allocatedata/${data._id}`, {
+      const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
         method: 'DELETE',
       });
 
