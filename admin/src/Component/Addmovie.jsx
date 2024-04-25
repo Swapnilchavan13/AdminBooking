@@ -16,10 +16,19 @@ export const Addmovie = () => {
   const [selectedMovie, setSelectedMovie] = useState('');
   const [movieOption, setMovieOption] = useState([]);
   const [showLinksPopup, setShowLinksPopup] = useState(false);
+  const [extraImages, setExtraImages] = useState(['', '', '']);
 
   const toggleLinksPopup = () => {
     setShowLinksPopup(!showLinksPopup);
   };
+
+  const handleExtraImageChange = (index, e) => {
+    const images = [...extraImages];
+    images[index] = e.target.value;
+    setExtraImages(images);
+  };
+
+
 
   const adminuser = localStorage.getItem('adminloggedinuser');
   var show = "none";
@@ -68,6 +77,15 @@ export const Addmovie = () => {
   useEffect(() => {
     fetchMovieOptions();
   }, []);
+
+  const renderExtraImagesInputs = () => {
+    return extraImages.map((image, index) => (
+      <div key={index}>
+        <label htmlFor={`extraImage${index + 1}`}>Extra Image {index + 1}:</label>
+        <input type="text" id={`extraImage${index + 1}`} value={image} onChange={(e) => handleExtraImageChange(index, e)} />
+      </div>
+    ));
+  };
 
   const handleMovieChange = (event) => {
     setSelectedMovie(event.target.value);
@@ -123,6 +141,7 @@ export const Addmovie = () => {
       dateTime: dateTime,
       startDate: startDate,
       endDate: endDate,
+      extraImages: extraImages,
       isDeleted: isDeleted,
       isExpired: isExpired,
     };
@@ -151,6 +170,7 @@ export const Addmovie = () => {
           setDateTime('');
           setStartDate('');
           setEndDate('');
+          extraImages('');
           setIsDeleted(false);
           setIsExpired(false);
           fetchMovieOptions(); // Refresh movie options after adding a new movie
@@ -216,6 +236,8 @@ export const Addmovie = () => {
           </div>
         )}
 
+
+{renderExtraImagesInputs()}
 
         <div>
           <label htmlFor="movieDesc">Movie Description:</label>
