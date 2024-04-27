@@ -19,6 +19,7 @@ export const Addtheatre = () => {
     theatreOperatorName: '',
     theatreOperatorIDproof: '',
     theaterScreens: 1,
+    totalScreens: 0,
     isDeleted: false,
     rows: [],
     theatreId: 0, // Initialize theatreId
@@ -180,6 +181,10 @@ export const Addtheatre = () => {
         <input type="text" name="theatreOperatorIDproof" value={details.theatreOperatorIDproof} onChange={handleInputChange} />
       </label>
       <br />
+      <label>
+        Total Screens:
+        <input type="number" name="totalScreens" value={details.totalScreens} onChange={handleInputChange} />
+      </label>
       <label>
         Theater Screens:
         <select name="theaterScreens" value={details.theaterScreens} onChange={handleInputChange}>
