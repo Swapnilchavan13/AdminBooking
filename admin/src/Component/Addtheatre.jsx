@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/theatre.css';
 
 export const Addtheatre = () => {
@@ -21,10 +21,40 @@ export const Addtheatre = () => {
     theaterScreens: 1,
     isDeleted: false,
     rows: [],
+    theatreId: 0, // Initialize theatreId
   });
 
   const [currentOption, setCurrentOption] = useState('A');
   const [lastoption, setLastoption] = useState(false);
+
+  useEffect(() => {
+    // Fetch theater data from the API to check for existing theater combinations
+    fetch('http://62.72.59.146:3005/theatredata')
+      .then(response => response.json())
+      .then(data => {
+        // Check if theater combination already exists
+        const existingTheatre = data.find(theatre =>
+          theatre.theatreName === details.theatreName &&
+          theatre.theatreCity === details.theatreCity &&
+          theatre.theatrePinCode === details.theatrePinCode
+        );
+
+        if (existingTheatre) {
+          // If theater combination exists, set the same theatreId
+          setDetails(prevDetails => ({
+            ...prevDetails,
+            theatreId: existingTheatre.theatreId
+          }));
+        } else {
+          // If theater combination doesn't exist, assign new theatreId
+          setDetails(prevDetails => ({
+            ...prevDetails,
+            theatreId: data.length + 1
+          }));
+        }
+      })
+      .catch(error => console.error('Error fetching theater data:', error));
+  }, [details.theatreName, details.theatreCity, details.theatrePinCode]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,20 +92,10 @@ export const Addtheatre = () => {
       rows: updatedRows,
     });
   };
-
   const handleSave = () => {
     const newData = {
-      theatreName: details.theatreName,
-      theatreLocation: details.theatreLocation,
-      theatreCity: details.theatreCity,
-      theatrePinCode: details.theatrePinCode,
-      theatreOperatorEmail: details.theatreOperatorEmail,
-      theatreOperatorContact: details.theatreOperatorContact,
-      theatreOperatorName: details.theatreOperatorName,
-      theatreOperatorIDproof: details.theatreOperatorIDproof,
-      theaterScreens: details.theaterScreens,
-      isDeleted: details.isDeleted,
-      rows: details.rows,
+      ...details,
+      rows: details.rows.map(row => ({ ...row, option: row.option.toUpperCase() }))
     };
 
     fetch('http://62.72.59.146:3005/theatredata', {
@@ -87,30 +107,34 @@ export const Addtheatre = () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert('Data saved successfully');
-          setDetails({
-            theatreName: '',
-            theatreLocation: '',
-            theatreCity: '',
-            theatrePinCode: '',
-            theatreOperatorEmail: '',
-            theatreOperatorContact: '',
-            theatreOperatorName: '',
-            theatreOperatorIDproof: '',
-            theaterScreens: 1,
-            isDeleted: false,
-            rows: [],
+          alert('First data saved successfully');
+          // Make the second POST request after the first one completes
+          return fetch('http://62.72.59.146:3005/theatredat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newData),
           });
-          window.location.reload(false);
         } else {
-          alert('Failed to save data');
+          alert('Failed to save first data');
+          throw new Error('Failed to save first data');
+        }
+      })
+      .then((response) => {
+        if (response.ok) {
+          alert('Second data saved successfully');
+          // Perform any necessary actions after successful save
+        } else {
+          alert('Failed to save second data');
+          throw new Error('Failed to save second data');
         }
       })
       .catch((error) => {
-        console.error('Error while saving data:', error);
+        console.error('Error:', error);
       });
   };
-
+  
 
   return (
     <div className='main' style={{ display: show }}>
