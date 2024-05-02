@@ -6,6 +6,8 @@ export const Allocatemovie = () => {
   const [cities, setCities] = useState('');
   const [theaters, setTheaters] = useState('');
 
+  const[s, setSs]= useState([]);
+
   const [selectedScreen, setSelectedScreen] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
 
@@ -84,6 +86,8 @@ export const Allocatemovie = () => {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreId)
         const dd = adata.map((el) => el.date)
+        const ss = adata.map((el) => el.selectedscreen)        
+        setSs(ss)
         setatheatre(aa)
         setadate(dd)
         setAlloacatedata(adata);
@@ -97,7 +101,7 @@ export const Allocatemovie = () => {
     }
   };
 
-  console.log(theaterOptions)
+  console.log(allocatedata)
 
   useEffect(() => {
     fetchMovieOptions();
@@ -154,17 +158,21 @@ export const Allocatemovie = () => {
       return;
     }
 
-
-
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
 
+     // Find the theater object based on the selected theater ID
+     const selectedTheaterObj = theaterOptions.find(theater => theater.id === selectedTheatre);
+
+  console.log("theaterOptions", theaterOptions)
+
     const newData = {
       admin: adminuser,
       date: formattedDate,
-      theatreId: selectedTheatre,
-      theatreName: theaterOptions.find(theatre => theatre.id === selectedTheatre).name, // Include theater name
+      city: selectedCity,
+      theatreId: selectedTheaterObj.theatreID,
+      theatreName: selectedTheaterObj.name,
       selectedscreen: selectedScreen,
       description: '',
       movieData: {},
@@ -255,6 +263,7 @@ export const Allocatemovie = () => {
         const updatedData = allocatedata.filter(item => item._id !== data._id);
         setAlloacatedata(updatedData);
         alert('Data Reset Successfully');
+
         // Set the delete action flag
         setDeleteActionTaken(true);
       } else {
@@ -284,7 +293,6 @@ export const Allocatemovie = () => {
 
 
   // Filter unique theater names based on selected city
-  const uniqueTheaterNames = [...new Set(theaters.map((theater) => theater.name))];
   // Filter unique screen IDs based on selected city
   const uniqueScreenIds = [...new Set(theaters.map((theater) => theater.screen))];
 
@@ -310,9 +318,9 @@ export const Allocatemovie = () => {
       <div id='selthe'>
         <select value={selectedTheatre} onChange={handleTheatreChange}>
           <option value="">Select Theatre</option>
-          {uniqueTheaterNames.map((theaterName, index) => (
-            <option key={index} value={theaterName}>
-              {theaterName}
+          {theaters.map((theater, index) => (
+            <option key={index} value={theater.theatreID}>
+              {theater.name}
             </option>
           ))}
         </select>
@@ -346,16 +354,19 @@ export const Allocatemovie = () => {
           <tbody>
             {[...Array(days).keys()].map((day) => {
               const currentDate = new Date(startDate);
+
               currentDate.setDate(startDate.getDate() + day);
               const formattedDate = currentDate.toLocaleDateString();
               const dayOfWeek = getDayOfWeek(currentDate);
 
               // Find data corresponding to the date and theatre
-              const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreId === selectedTheatre);
+ // Find data corresponding to the date and theatre
+ const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreId == selectedTheatre && item.selectedscreen == selectedScreen );
+ 
 
-              var val = false; // Initialize val to false before the loop
+ var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
-                if (formattedDate === adate[i] && selectedTheatre === atheatre[i]) {
+                if (formattedDate === adate[i] && selectedTheatre === atheatre[i] && selectedScreen === s[i]) {
                   val = true;
                 }
               }
