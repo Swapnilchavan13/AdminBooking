@@ -3,9 +3,11 @@ import '../Styles/allot.css';
 
 export const Allocatemovie = () => {
   const [selectedTheatre, setSelectedTheatre] = useState('');
-  const [theatreName, setTheatreName] = useState('');
+  const [cities, setCities] = useState('');
+  const [theaters, setTheaters] = useState('');
 
   const [selectedScreen, setSelectedScreen] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
 
   const [movieNames, setMovieOption] = useState([]);
   const [poster, setPoster] = useState([]);
@@ -32,7 +34,7 @@ export const Allocatemovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://62.72.59.146:3005/moviedata');
+      const response = await fetch('http://localhost:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
 
@@ -53,15 +55,23 @@ export const Allocatemovie = () => {
 
       // console.log(movieData)
 
-      const theatreres = await fetch('http://62.72.59.146:3005/theatredata');
+      const theatreres = await fetch('http://localhost:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
+        // Extract unique city names from theater data
+        const cities = [...new Set(tdata.map((el) => el.theatreCity))];
+        setCities(cities);
+
+        const uniqueTheaters = [...new Set(tdata.map((el) => el.theatreName))];
+        setTheaters(uniqueTheaters);
 
         // Extract theatre names and IDs from the response
         const theaterOptions = tdata.map((el) => ({
           name: el.theatreName,
           id: el._id,
-          screen: el.theaterScreens
+          screen: el.theaterScreens,
+          theatreID: el.theatreId,
+          theatrecity: el.theatreCity
         }));
 
         setTheaterOptions(theaterOptions);
@@ -69,7 +79,7 @@ export const Allocatemovie = () => {
         console.error('Failed to fetch movie options');
       }
 
-      const allocates = await fetch('http://62.72.59.146:3005/allocatedata');
+      const allocates = await fetch('http://localhost:3005/allocatedata');
       if (allocates.ok) {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreId)
@@ -86,6 +96,8 @@ export const Allocatemovie = () => {
       console.error('Error while fetching movie options:', error);
     }
   };
+
+  console.log(theaterOptions)
 
   useEffect(() => {
     fetchMovieOptions();
@@ -141,35 +153,37 @@ export const Allocatemovie = () => {
       alert('Please Select Theatre and Screen');
       return;
     }
-  
+
+
+
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
-  
+
     const newData = {
       admin: adminuser,
       date: formattedDate,
       theatreId: selectedTheatre,
       theatreName: theaterOptions.find(theatre => theatre.id === selectedTheatre).name, // Include theater name
       selectedscreen: selectedScreen,
-      description:'',
+      description: '',
       movieData: {},
       photo: poster,
       isActive: false,
       startDate: new Date(), // Set start date as current date
       endDate: new Date(new Date().setDate(new Date().getDate() + 1)), // Set end date as the next date    
-      startDate_EP:'',
-      endDate_EP:'',
+      startDate_EP: '',
+      endDate_EP: '',
       category: '',
-      totalLikes:0,
+      totalLikes: 0,
       totalComments: 0,
-      likedBy:{},
+      likedBy: {},
       screenId: selectedScreen
     };
-  
+
     movieNames.forEach((movieName) => {
       const showTimeData = [];
-  
+
       showTimes.forEach((showTime) => {
         const key = `${movieName}-${day}-${showTime}`;
         const showTimeValue = selectedShowTimes[key];
@@ -177,27 +191,27 @@ export const Allocatemovie = () => {
           showTimeData.push(showTime);
         }
       });
-  
+
       if (showTimeData.length > 0) {
         newData.movieData[movieName] = showTimeData;
       }
       setSavedRows([...savedRows, day]);
     });
-  
+
     try {
       // Make a POST request to the API
-      const response = await fetch('http://62.72.59.146:3005/allocatedata', {
+      const response = await fetch('http://localhost:3005/allocatedata', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(newData)
       });
-  
+
       if (response.status === 200) {
         // Data saved successfully
         const result = await response.json();
-  
+
         if (result.message === 'Duplicate data') {
           alert('Error: Duplicate data');
         } else {
@@ -212,7 +226,19 @@ export const Allocatemovie = () => {
       console.error('Error while saving data:', error);
     }
   };
-  
+
+  const handleCityChange = (event) => {
+    const selectedCity = event.target.value;
+    setSelectedCity(selectedCity);
+
+    // Filter theaters based on the selected city
+    const filteredTheaters = theaterOptions.filter(theater => theater.theatrecity === selectedCity);
+    setTheaters(filteredTheaters);
+
+    // Reset selected theater when city changes
+    setSelectedTheatre('');
+    setSelectedScreen('');
+  };
 
   const handleDelete = async (data) => {
     try {
@@ -220,7 +246,7 @@ export const Allocatemovie = () => {
       setSelectedTheatreBeforeDelete(selectedTheatre);
 
       // Make a DELETE request to the API to delete data
-      const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
+      const response = await fetch(`http://localhost:3005/allocatedata/${data._id}`, {
         method: 'DELETE',
       });
 
@@ -239,6 +265,9 @@ export const Allocatemovie = () => {
     }
   };
 
+
+
+
   useEffect(() => {
     fetchMovieOptions();
     // Check if a delete action was taken and if so, select the same theatre again
@@ -253,17 +282,37 @@ export const Allocatemovie = () => {
     return <div>Loading...</div>;
   }
 
+
+  // Filter unique theater names based on selected city
+  const uniqueTheaterNames = [...new Set(theaters.map((theater) => theater.name))];
+  // Filter unique screen IDs based on selected city
+  const uniqueScreenIds = [...new Set(theaters.map((theater) => theater.screen))];
+
+
   return (
     <div className="main" style={{ display: show }}>
       <h1>Allocate Movie</h1>
       <h3>Select Theatre: {selectedTheatre}</h3>
 
+      <h3>Select City:</h3>
+      <div id='selthe'>
+        <select value={selectedCity} onChange={handleCityChange}>
+          <option value="">Select City</option>
+          {/* Map cities dynamically */}
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div id='selthe'>
         <select value={selectedTheatre} onChange={handleTheatreChange}>
           <option value="">Select Theatre</option>
-          {theaterOptions.map((theatre, index) => (
-            <option key={index} value={theatre.id}>
-              {theatre.name}
+          {uniqueTheaterNames.map((theaterName, index) => (
+            <option key={index} value={theaterName}>
+              {theaterName}
             </option>
           ))}
         </select>
@@ -272,9 +321,9 @@ export const Allocatemovie = () => {
       <div id='selthe'>
         <select value={selectedScreen} onChange={handleScreenChange}>
           <option value="">Select Screen</option>
-          {theaterOptions.map((theatre, index) => (
-            <option key={index} value={theatre.screen}>
-              {theatre.screen}
+          {uniqueScreenIds.map((screenId, index) => (
+            <option key={index} value={screenId}>
+              {screenId}
             </option>
           ))}
         </select>
