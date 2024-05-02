@@ -21,6 +21,8 @@ export const Allocatemovie = () => {
   const [atheatre, setatheatre] = useState([]);
   const [adate, setadate] = useState([]);
 
+  const [selectedTheatreId, setSelectedTheatreId] = useState('')
+
   const [selectedTheatreBeforeDelete, setSelectedTheatreBeforeDelete] = useState(''); // New state variable
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
@@ -109,6 +111,8 @@ export const Allocatemovie = () => {
 
   const handleTheatreChange = (event) => {
     setSelectedTheatre(event.target.value);
+
+    setSelectedTheatreId(event.target.value);
   };
 
   const handleScreenChange = (event) => {
@@ -163,7 +167,7 @@ export const Allocatemovie = () => {
     const formattedDate = currentDate.toLocaleDateString();
 
      // Find the theater object based on the selected theater ID
-     const selectedTheaterObj = theaterOptions.find(theater => theater.id === selectedTheatre);
+     const selectedTheaterObj = theaterOptions.find(theater => theater.theatreID == selectedTheatre);
 
   console.log("theaterOptions", theaterOptions)
 
@@ -171,7 +175,7 @@ export const Allocatemovie = () => {
       admin: adminuser,
       date: formattedDate,
       city: selectedCity,
-      theatreId: selectedTheaterObj.theatreID,
+      theatreId: selectedTheatreId,
       theatreName: selectedTheaterObj.name,
       selectedscreen: selectedScreen,
       description: '',
