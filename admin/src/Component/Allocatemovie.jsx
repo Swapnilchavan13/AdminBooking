@@ -27,6 +27,8 @@ export const Allocatemovie = () => {
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
 
+  const [matchid, setMatchid] = useState('')
+
   const adminuser = localStorage.getItem('adminloggedinuser')
 
   var show = "none"
@@ -103,17 +105,22 @@ export const Allocatemovie = () => {
     }
   };
 
-  // console.log(allocatedata)
+  console.log(allocatedata)
 
   useEffect(() => {
     fetchMovieOptions();
   }, []);
 
   const handleTheatreChange = (event) => {
-    setSelectedTheatre(event.target.value);
-
-    setSelectedTheatreId(event.target.value);
+    const selectedTheatreId = event.target.value;
+    const selectedTheatreId2 = event.target.options[event.target.selectedIndex].getAttribute('data-value2');
+    setSelectedTheatre(selectedTheatreId);
+    setSelectedTheatreId(selectedTheatreId);
+    setMatchid(selectedTheatreId2)
+    // Now you have both selectedTheatreId and selectedTheatreId2 available for use
   };
+  
+  console.log("matchid", matchid)
 
   const handleScreenChange = (event) => {
     setSelectedScreen(event.target.value);
@@ -169,7 +176,7 @@ export const Allocatemovie = () => {
      // Find the theater object based on the selected theater ID
      const selectedTheaterObj = theaterOptions.find(theater => theater.theatreID == selectedTheatre);
 
-  // console.log("theaterOptions", theaterOptions)
+  console.log("theaterOptions", theaterOptions)
 
     const newData = {
       admin: adminuser,
@@ -190,7 +197,8 @@ export const Allocatemovie = () => {
       totalLikes: 0,
       totalComments: 0,
       likedBy: {},
-      screenId: selectedScreen
+      screenId: selectedScreen,
+      matchId: matchid
     };
 
     movieNames.forEach((movieName) => {
@@ -306,7 +314,7 @@ export const Allocatemovie = () => {
       <h1>Allocate Movie</h1>
       <h3>Select Theatre: {selectedTheatre}</h3>
 
-      <h3>Select City: {selectedCity} </h3>
+      <h3>Select City:</h3>
       <div id='selthe'>
         <select value={selectedCity} onChange={handleCityChange}>
           <option value="">Select City</option>
@@ -320,15 +328,15 @@ export const Allocatemovie = () => {
       </div>
 
       <div id='selthe'>
-        <select value={selectedTheatre} onChange={handleTheatreChange}>
-          <option value="">Select Theatre</option>
-          {theaters.map((theater, index) => (
-            <option key={index} value={theater.theatreID}>
-              {theater.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <select value={selectedTheatre} onChange={handleTheatreChange}>
+        <option value="">Select Theatre</option>
+        {theaters.map((theater, index) => (
+          <option key={index} data-value2={theater.id} value={theater.theatreID}>
+            {theater.name}
+          </option>
+        ))}
+      </select>
+    </div>
 
       <div id='selthe'>
         <select value={selectedScreen} onChange={handleScreenChange}>
@@ -365,11 +373,10 @@ export const Allocatemovie = () => {
 
               // Find data corresponding to the date and theatre
  // Find data corresponding to the date and theatre
-// Find data corresponding to the date and theatre
-const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreId === selectedTheatre);
+ const dataForDay = allocatedata.find(item => item.date === formattedDate && item.theatreId == selectedTheatre && item.selectedscreen == selectedScreen );
  
-               var val = false; // Initialize val to false before the loop
- 
+
+ var val = false; // Initialize val to false before the loop
               for (var i = 0; i < adate.length; i++) {
                 if (formattedDate == adate[i] && selectedTheatre == atheatre[i] && selectedScreen == s[i]) {
                   val = true;
