@@ -151,6 +151,7 @@ export const Addmovie = () => {
       return;
     }
 
+    // First API Call
     fetch('http://62.72.59.146:3005/moviedata', {
       method: 'POST',
       headers: {
@@ -161,6 +162,7 @@ export const Addmovie = () => {
       .then((response) => {
         if (response.ok) {
           alert('Data saved successfully');
+          // Clearing form fields
           setMoviename('');
           setPoster('');
           setMovieDesc('');
@@ -181,7 +183,27 @@ export const Addmovie = () => {
       .catch((error) => {
         console.error('Error while saving data:', error);
       });
-  };
+
+    // Second API Call
+    fetch('http://192.168.0.120:8012/postMovieDetails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('Data saved successfully In Table');
+        } else {
+          alert('Not Saved In Table');
+        }
+      })
+      .catch((error) => {
+        console.error('Error while saving data to another API:', error);
+      });
+};
+
 
   const deleteMovie = () => {
     if (selectedMovie) {

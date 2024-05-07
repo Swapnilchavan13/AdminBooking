@@ -102,7 +102,7 @@ export const Addtheatre = () => {
       rows: details.rows.map(row => ({ ...row, option: row.option.toUpperCase() }))
     };
 
-    fetch('http://localhost:3005/theatredata', {
+    fetch('http://62.72.59.146:3005/theatredata', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export const Addtheatre = () => {
         if (response.ok) {
           alert('First data saved successfully');
           // Make the second POST request after the first one completes
-          return fetch('http://192.168.0.118:8012/postTheatreData', {
+          return fetch('http://192.168.0.120:8012/postTheatreData', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

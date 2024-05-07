@@ -27,6 +27,8 @@ export const Allocatemovie = () => {
   const [deleteActionTaken, setDeleteActionTaken] = useState(false); // New state variable
   const [dataFetched, setDataFetched] = useState(false); // Add a flag to indicate if data has been fetched
 
+  const [matchid, setMatchid] = useState('')
+
   const adminuser = localStorage.getItem('adminloggedinuser')
 
   var show = "none"
@@ -38,7 +40,7 @@ export const Allocatemovie = () => {
 
   const fetchMovieOptions = async () => {
     try {
-      const response = await fetch('http://localhost:3005/moviedata');
+      const response = await fetch('http://62.72.59.146:3005/moviedata');
       if (response.ok) {
         const data = await response.json();
 
@@ -59,7 +61,7 @@ export const Allocatemovie = () => {
 
       // console.log(movieData)
 
-      const theatreres = await fetch('http://localhost:3005/theatredata');
+      const theatreres = await fetch('http://62.72.59.146:3005/theatredata');
       if (theatreres.ok) {
         const tdata = await theatreres.json();
         // Extract unique city names from theater data
@@ -83,7 +85,7 @@ export const Allocatemovie = () => {
         console.error('Failed to fetch movie options');
       }
 
-      const allocates = await fetch('http://localhost:3005/allocatedata');
+      const allocates = await fetch('http://62.72.59.146:3005/allocatedata');
       if (allocates.ok) {
         const adata = await allocates.json();
         const aa = adata.map((el) => el.theatreId)
@@ -110,10 +112,15 @@ export const Allocatemovie = () => {
   }, []);
 
   const handleTheatreChange = (event) => {
-    setSelectedTheatre(event.target.value);
-
-    setSelectedTheatreId(event.target.value);
+    const selectedTheatreId = event.target.value;
+    const selectedTheatreId2 = event.target.options[event.target.selectedIndex].getAttribute('data-value2');
+    setSelectedTheatre(selectedTheatreId);
+    setSelectedTheatreId(selectedTheatreId);
+    setMatchid(selectedTheatreId2)
+    // Now you have both selectedTheatreId and selectedTheatreId2 available for use
   };
+  
+  console.log("matchid", matchid)
 
   const handleScreenChange = (event) => {
     setSelectedScreen(event.target.value);
@@ -190,7 +197,8 @@ export const Allocatemovie = () => {
       totalLikes: 0,
       totalComments: 0,
       likedBy: {},
-      screenId: selectedScreen
+      screenId: selectedScreen,
+      matchId: matchid
     };
 
     movieNames.forEach((movieName) => {
@@ -212,7 +220,7 @@ export const Allocatemovie = () => {
 
     try {
       // Make a POST request to the API
-      const response = await fetch('http://localhost:3005/allocatedata', {
+      const response = await fetch('http://62.72.59.146:3005/allocatedata', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -258,7 +266,7 @@ export const Allocatemovie = () => {
       setSelectedTheatreBeforeDelete(selectedTheatre);
 
       // Make a DELETE request to the API to delete data
-      const response = await fetch(`http://localhost:3005/allocatedata/${data._id}`, {
+      const response = await fetch(`http://62.72.59.146:3005/allocatedata/${data._id}`, {
         method: 'DELETE',
       });
 
@@ -320,15 +328,15 @@ export const Allocatemovie = () => {
       </div>
 
       <div id='selthe'>
-        <select value={selectedTheatre} onChange={handleTheatreChange}>
-          <option value="">Select Theatre</option>
-          {theaters.map((theater, index) => (
-            <option key={index} value={theater.theatreID}>
-              {theater.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <select value={selectedTheatre} onChange={handleTheatreChange}>
+        <option value="">Select Theatre</option>
+        {theaters.map((theater, index) => (
+          <option key={index} data-value2={theater.id} value={theater.theatreID}>
+            {theater.name}
+          </option>
+        ))}
+      </select>
+    </div>
 
       <div id='selthe'>
         <select value={selectedScreen} onChange={handleScreenChange}>
