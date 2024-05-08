@@ -13,6 +13,7 @@ export const Addtheatre = () => {
     theatreName: '',
     theatreLocation: '',
     theatreCity: '',
+    pinCodesForAllocation: [], 
     theatrePinCode: '',
     theatreOperatorEmail: '',
     theatreOperatorContact: '',
@@ -61,11 +62,20 @@ export const Addtheatre = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const inputName = name === 'seatingcapacity' ? 'seatingCapacity' : name;
-  
-    setDetails({
-      ...details,
-      [inputName]: value,
-    });
+
+    if (name === 'pinCodesForAllocation') {
+      // Split the input value by commas to get individual pin codes
+      const pinCodes = value.split(',').map(pin => pin.trim());
+      setDetails({
+        ...details,
+        [inputName]: pinCodes,
+      });
+    } else {
+      setDetails({
+        ...details,
+        [inputName]: value,
+      });
+    }
   };
 
   const addRow = () => {
@@ -162,6 +172,11 @@ export const Addtheatre = () => {
       <label>
         Theatre PinCode:
         <input type="text" name="theatrePinCode" value={details.theatrePinCode} onChange={handleInputChange} />
+      </label>
+      <br />
+      <label>
+        Pin Codes for Allocation (Separate by commas):
+        <input type="text" name="pinCodesForAllocation" value={details.pinCodesForAllocation} onChange={handleInputChange} />
       </label>
       <br />
       <label>
