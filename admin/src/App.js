@@ -7,6 +7,7 @@ import { Allocatemovie } from "./Component/Allocatemovie";
 import { All } from "./Component/All";
 import { Login } from "./Component/Login";
 import { Addscreen } from "./Component/Addscreen";
+import { AllTheatres } from "./Component/AllTheatres";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="addmovie" element={<Addmovie />} />
         <Route path="allocatemovie" element={<Allocatemovie />} />
         <Route path="all" element={<All />} />
+        <Route path="alltheatre" element={<AllTheatres />} />
+
       </Routes>
     </BrowserRouter>
   );

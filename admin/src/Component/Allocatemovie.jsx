@@ -161,6 +161,8 @@ export const Allocatemovie = () => {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     return daysOfWeek[date.getDay()];
   };
+  
+  console.log("startDate", startDate);
 
   const handleSave = async (day) => {
     if (selectedTheatre === '' || selectedScreen === '') {
@@ -170,17 +172,18 @@ export const Allocatemovie = () => {
     }
 
     const currentDate = new Date(startDate);
+
     currentDate.setDate(startDate.getDate() + day);
     const formattedDate = currentDate.toLocaleDateString();
-
-     // Find the theater object based on the selected theater ID
-     const selectedTheaterObj = theaterOptions.find(theater => theater.theatreID == selectedTheatre);
-
+    
+    // Find the theater object based on the selected theater ID
+    const selectedTheaterObj = theaterOptions.find(theater => theater.theatreID == selectedTheatre);
+    
   console.log("theaterOptions", theaterOptions)
 
     const newData = {
       admin: adminuser,
-      date: formattedDate,
+      date: currentDate,
       city: selectedCity,
       theatreId: selectedTheatreId,
       theatreName: selectedTheaterObj.name,
