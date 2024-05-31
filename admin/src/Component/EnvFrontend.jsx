@@ -19,7 +19,7 @@ export const EnvFrontend = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append('eventName', eventName);
     formData.append('eventDescription', eventDescription);
@@ -34,35 +34,39 @@ export const EnvFrontend = () => {
     formData.append('pricePerSeat', pricePerSeat);
     images.forEach((image) => formData.append('images', image));
     if (video) formData.append('video', video);
-
+  
     try {
-      await axios.post('http://62.72.59.146:3005/eventupload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await fetch('http://62.72.59.146:3005/eventupload', {
+        method: 'POST',
+        body: formData,
       });
-      console.log('Files uploaded successfully');
-      alert("Event Is Created");
-
+  
+      if (response.ok) {
+        console.log('Files uploaded successfully');
+        alert("Event Is Created");
+  
         // Reset all fields to empty
-    setEventName('');
-    setEventDescription('');
-    setEventCategory('');
-    setPincode('');
-    setCity('');
-    setEventAddress('');
-    setStartDate('');
-    setEndDate('');
-    setEventTime('');
-    setNumberOfSeats('');
-    setPricePerSeat('');
-    setImages([]);
-    setVideo(null);
-
+        setEventName('');
+        setEventDescription('');
+        setEventCategory('');
+        setPincode('');
+        setCity('');
+        setEventAddress('');
+        setStartDate('');
+        setEndDate('');
+        setEventTime('');
+        setNumberOfSeats('');
+        setPricePerSeat('');
+        setImages([]);
+        setVideo(null);
+      } else {
+        throw new Error('Failed to upload files');
+      }
     } catch (err) {
       console.error(err);
     }
   };
+  
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
