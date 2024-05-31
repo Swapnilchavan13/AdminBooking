@@ -36,7 +36,7 @@ export const EnvFrontend = () => {
     if (video) formData.append('video', video);
 
     try {
-      await axios.post('http://localhost:3005/eventupload', formData, {
+      await axios.post('http://62.72.59.146:3005/eventupload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
