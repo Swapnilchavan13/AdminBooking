@@ -42,6 +42,23 @@ export const EnvFrontend = () => {
         },
       });
       console.log('Files uploaded successfully');
+      alert("Event Is Created");
+
+        // Reset all fields to empty
+    setEventName('');
+    setEventDescription('');
+    setEventCategory('');
+    setPincode('');
+    setCity('');
+    setEventAddress('');
+    setStartDate('');
+    setEndDate('');
+    setEventTime('');
+    setNumberOfSeats('');
+    setPricePerSeat('');
+    setImages([]);
+    setVideo(null);
+
     } catch (err) {
       console.error(err);
     }
@@ -63,7 +80,7 @@ export const EnvFrontend = () => {
     setImages(newImages);
   };
 
-  
+
   return (
     <form className="event-form" onSubmit={handleSubmit}>
 
@@ -94,7 +111,8 @@ export const EnvFrontend = () => {
         <option value="music">Music</option>
         <option value="sports">Sports</option>
         <option value="technology">Technology</option>
-        {/* Add more options as needed */}
+        <option value="kids">Kids</option>
+        
       </select>
 
       
